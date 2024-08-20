@@ -1,0 +1,198 @@
+import React,{useState} from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { TextField, Button, Typography, InputAdornment, Link, Box, Snackbar, Alert } from '@mui/material';
+import { Email as EmailIcon, Lock as LockIcon, GitHub as GitHubIcon } from '@mui/icons-material';
+import logo from '../../assets/jpg/logo.jpg'; // Update the path to your logo
+import backgroundImage from '../../assets/jpg/loginbg.jpg'; // Update the path to your background image
+import useAuthenticateUser from 'hooks/useAuthenticateUser';
+import { useNavigate } from 'react-router-dom';
+
+const LoginPage = ({handleLoginWithGithub}) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const navigate = useNavigate();
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onBlur',
+  });
+ 
+
+  const handleSuccess = (user) => {
+    console.log(user,'user data from baba')
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('userName', user.name);
+    localStorage.setItem('userType', user.userType);
+    navigate('/dashboard'); 
+  };
+
+  const handleError = (error) => {
+    setSnackbarMessage(error.message);
+    setOpenSnackbar(true); 
+  };
+
+  const { mutate: authenticateUser, isLoading } = useAuthenticateUser(handleSuccess, handleError);
+  
+  const onSubmit = (data) => {
+    console.log(data);
+    authenticateUser(data); 
+  };
+
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        sx={{
+          backgroundColor: 'white',
+          opacity:'0.9',
+          borderRadius: 2,
+          padding: 4,
+          boxShadow: 3,
+          width: { xs: '90%', sm: '80%', md: '60%', lg: '50%' },
+          maxWidth: '400px',
+          textAlign: 'center',
+        }}
+      >
+        <Box
+          component="img"
+          src={logo}
+          alt="Company Logo"
+          sx={{
+            width: '65px',
+            height: '65px',
+            display: 'block',
+            margin: '0 auto',
+            mb: 2,
+          }}
+        />
+        <Typography variant="h6" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Invalid email address',
+              },
+            }}
+            sx={{p:0}}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Email"
+                variant="outlined"
+                margin="normal"
+                placeholder="Enter your email"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon fontSize ='small'/>
+                    </InputAdornment>
+                  ),
+                }}
+                error={!!errors.email}
+                helperText={errors.email ? errors.email.message : ''}
+                size="small"
+                sx={{
+                    "& .MuiInputBase-input": {
+                      fontSize: "0.875rem",
+                    },
+                    p:0
+                  }}
+                
+              />
+            )}
+          />
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: 'Password is required',
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters long',
+              },
+              pattern: {
+                value: /(?=.*\d)(?=.*[!@#$%^&*])/,
+                message: 'Password must include at least one digit and one special character',
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                type="password"
+                label="Password"
+                variant="outlined"
+                margin="normal"
+                placeholder="Enter your password"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockIcon fontSize='small'/>
+                    </InputAdornment>
+                  ),
+                }}
+                error={!!errors.password}
+                helperText={errors.password ? errors.password.message : ''}
+                size="small"
+                sx={{
+                    "& .MuiInputBase-input": {
+                      fontSize: "0.875rem", 
+                    },
+                  }}
+              />
+            )}
+          />
+          <Button 
+            type="submit" 
+            fullWidth 
+            variant="contained" 
+            sx={{ mt: 2, mb:1 }}
+          >
+            Login
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 1 }}
+            startIcon={<GitHubIcon />}
+            onClick={handleLoginWithGithub}
+          >
+            Login with GitHub
+          </Button>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            Don’t have an account? <Link href="/signup" underline="hover">Create one</Link>
+          </Typography>
+        </form>
+        <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="error">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      </Box>
+    </Box>
+  );
+};
+
+export default LoginPage;

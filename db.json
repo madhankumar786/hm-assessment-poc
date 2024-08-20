@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "8856",
+      "name": "madhan kumar",
+      "email": "madhanks27@gmail.com",
+      "phone": "9481645796",
+      "password": "M@madhan123",
+      "userType": "Internal"
+    },
+    {
+      "id": "5f3c",
+      "name": "Raj",
+      "email": "raj@gmail.com",
+      "phone": "8877887788",
+      "password": "M@raj12345",
+      "userType": "External"
+    },
+    {
+      "id": "ed6a",
+      "name": "ram",
+      "email": "ram@gmail.com",
+      "phone": "9845453454",
+      "password": "M@ram123",
+      "userType": "External"
+    },
+    {
+      "id": "910a",
+      "name": "ram",
+      "email": "ram@gmail.com",
+      "phone": "8844334433",
+      "password": "M@ram123",
+      "userType": "Internal"
+    }
+  ]
+}
