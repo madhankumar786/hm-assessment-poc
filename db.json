@@ -24,13 +24,13 @@
       "password": "M@ram123",
       "userType": "External"
     },
-    {
-      "id": "910a",
-      "name": "ram",
-      "email": "ram@gmail.com",
-      "phone": "8844334433",
-      "password": "M@ram123",
-      "userType": "Internal"
+       {
+      "id": "8717",
+      "name": "test",
+      "email": "test@gmail.com",
+      "phone": "8877667766",
+      "password": "M@test123",
+      "userType": "External"
     }
   ]
 }

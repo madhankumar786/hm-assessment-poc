@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Incidents = () => {
   return (
-    <div>Incidents</div>
+    <h1>Incidents</h1>
   )
 }
 

@@ -52,6 +52,7 @@ function Header({ getUserData, userData }) {
   }, []);
 
   const handleLogoutConfirm = () => {
+    console.log('handleLogoutConfirm')
     setOpenModal(false);
     localStorage.removeItem("userName");
     localStorage.removeItem("name");
@@ -75,24 +76,26 @@ function Header({ getUserData, userData }) {
             onClick={handleOnClickAppTitle}
             src={AppLogo}
             alt="App Logo"
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer",flex:1}}
           />
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            sx={{ flexGrow: 1, cursor: "pointer",flex:1 }}
             onClick={handleOnClickAppTitle}
           >
             Company
           </Typography>
-          <Box sx={{ flexBasis:'850px', textAlign:'center' }}>
+          <Box sx={{ flexBasis:'850px', textAlign:'center',flex:16 }}>
             <Navbar userData={userData} />
           </Box>
-          <Tooltip title="Logout">
-            <IconButton color="inherit" onClick={() => setOpenModal(true)}>
-              <LogoutIcon />
-            </IconButton>
-          </Tooltip>
+          <Box sx={{flex:1}}>
+            <Tooltip title="Logout">
+              <IconButton color="inherit" onClick={() => setOpenModal(true)}>
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Toolbar>
       </AppBar>
       <Dialog

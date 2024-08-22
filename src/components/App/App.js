@@ -1,46 +1,27 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,useNavigate, Navigate } from "react-router-dom";
 import {
   LoginPage,
-  Header,
   About,
   Contact,
   SignupPage,
   Dashboard,
-  CheckUser,
+  Analytics,
+  GitHubCallback,
+  HomePage,
+  Incidents
 } from "components";
 const CLIENT_ID = "Ov23liC80XliMtFoFAlD";
 
 function App() {
-  const [rerender, setRerender] = useState(false);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem("accessToken");
-
-  useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const codeParams = urlParams.get("code");
-    console.log(codeParams);
-
-    if (codeParams && localStorage.getItem("accessToken") === null) {
-      async function getAccessToken() {
-        await fetch("http://localhost:4000/getAccessToken?code=" + codeParams, {
-          method: "GET",
-        })
-          .then((response) => {
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data, "data from getAccessToken");
-            if (data.access_token) {
-              localStorage.setItem("accessToken", data.access_token);
-              setRerender(!rerender);
-            }
-          });
-      }
-      getAccessToken();
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(token){
+      navigate('/')
     }
-  }, [rerender, token]);
+  },[token])
 
   async function getUserData() {
     await fetch("http://localhost:4000/getUserData", {
@@ -66,30 +47,29 @@ function App() {
       "https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID
     );
   };
+
+  const isAuthenticated = !!localStorage.getItem('accessToken');
+
   return (
     <div className="App">
       <header className="App-header">
-        {(localStorage.getItem("accessToken") || (localStorage.getItem("email"))) ? (
-          <>
-          <CheckUser>
-            <Header getUserData={getUserData} userData={userData}/>
-          </CheckUser>
-            <Routes>
-                <Route path="/login" element={<LoginPage handleLoginWithGithub={loginWithGithubLogin} />}/>
-                <Route path="/dashboard" element={<CheckUser><Dashboard/></CheckUser>}/>
-                <Route path="/about" element={<About/>}/>
-                <Route path="/contact" element={<Contact/>}/>
-                <Route path="/signup" element={<SignupPage/>}/>
-            </Routes>
-          </>
-        ) : (
-          <>
-            <Routes>
-               <Route path="/" element={ <LoginPage handleLoginWithGithub={loginWithGithubLogin} />}/>
-                <Route path="/signup" element={<SignupPage/>}/>
-            </Routes>
-          </>
-        )}
+      <Routes>
+      <Route path="/login" element={<LoginPage handleLoginWithGithub={loginWithGithubLogin} />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/oauth/callback" element={<GitHubCallback />} />
+        <Route
+          path="/"
+          element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="incidents" element={<Incidents />} />
+          <Route index element={<Dashboard />} /> {/* Default route */}
+        </Route>
+        <Route path="*" element={<Navigate to="/login" />} /> {/* Fallback route */}
+      </Routes>
       </header>
     </div>
   );

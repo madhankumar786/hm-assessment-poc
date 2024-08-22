@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TextField, Button, Typography, InputAdornment, Link, Box, Snackbar, Alert } from '@mui/material';
+import { TextField, Button, Typography, InputAdornment, Box, Snackbar, Alert } from '@mui/material';
 import { Email as EmailIcon, Lock as LockIcon, GitHub as GitHubIcon } from '@mui/icons-material';
-import logo from '../../assets/jpg/logo.jpg'; // Update the path to your logo
-import backgroundImage from '../../assets/jpg/loginbg.jpg'; // Update the path to your background image
+import logo from '../../assets/jpg/logo.jpg'; 
+import backgroundImage from '../../assets/jpg/loginbg.jpg'; 
 import useAuthenticateUser from 'hooks/useAuthenticateUser';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = ({handleLoginWithGithub}) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -22,9 +22,9 @@ const LoginPage = ({handleLoginWithGithub}) => {
 
   const handleSuccess = (user) => {
     console.log(user,'user data from baba')
+    localStorage.setItem('userType', user.userType);
     localStorage.setItem('email', user.email);
     localStorage.setItem('userName', user.name);
-    localStorage.setItem('userType', user.userType);
     navigate('/dashboard'); 
   };
 
@@ -178,7 +178,7 @@ const LoginPage = ({handleLoginWithGithub}) => {
             Login with GitHub
           </Button>
           <Typography variant="body2" sx={{ mt: 2 }}>
-            Don’t have an account? <Link href="/signup" underline="hover">Create one</Link>
+            Don’t have an account? <Link to="/signup" underline="hover">Create one</Link>
           </Typography>
         </form>
         <Snackbar

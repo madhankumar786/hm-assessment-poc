@@ -12,7 +12,6 @@ import {
   Typography,
   InputAdornment,
   Box,
-  Link,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -26,7 +25,7 @@ import {
   AccountCircle as AccountCircleIcon,
   Lock,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate,Link } from "react-router-dom"; 
 import signupBg from "../../assets/jpg/signup3.jpg";
 
 const Signup = () => {
@@ -93,7 +92,7 @@ const Signup = () => {
           position: "relative",
         }}
       >
-        <Link
+        <Box
           onClick={() => navigate("/")}
           sx={{
             position: "absolute",
@@ -107,7 +106,7 @@ const Signup = () => {
           <Typography variant="body1" sx={{ ml: 1, fontSize: "0.75rem" }}>
             &lt; Back
           </Typography>
-        </Link>
+        </Box>
         <Typography variant="h6" gutterBottom>
           Sign Up
         </Typography>
@@ -328,7 +327,7 @@ const Signup = () => {
           </Grid>
           <Typography variant="body2" sx={{ mt: 2 }}>
             Already a partner?{" "}
-            <Link href="/" underline="hover">
+            <Link to="/" underline="hover">
               Click here to login
             </Link>
           </Typography>

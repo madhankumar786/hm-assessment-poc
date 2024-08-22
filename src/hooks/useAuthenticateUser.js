@@ -1,18 +1,37 @@
-import { useMutation } from 'react-query';
-import axios from 'axios';
+import { useMutation } from "react-query";
+import { api } from "utils";
+import * as utils from 'utils';
+import config from "../config/config";
 
 const authenticateUser = async (credentials) => {
   const { email, password } = credentials;
-  const response = await axios.get('http://localhost:7000/users');
-  const users = response.data;
-
-  const user = users.find(user => user.email === email && user.password === password);
-
-  if (!user) {
-    throw new Error('Invalid email or password');
-  }
-
-  return user;
+  return api
+    .get({
+      endpoint: config.endpoint.baseServiceOne,
+      path: "users",
+    })
+    .then((response) => {
+      console.log(response, "response from login get call");
+      const users = response.data;
+      const user = users.find(
+        (user) => user.email === email && user.password === password
+      );
+      console.log(user, "user from authenicateUser");
+      if (!user) {
+        throw new Error("Invalid email or password");
+      }
+      if(user.email){
+        utils.generic.generateAccessToken(user.email).then(res => 
+          {
+            localStorage.setItem('accessToken',res)
+          })
+      }
+      return user;
+    })
+    .catch((error) => {
+      console.log(error, "error from login get call");
+    });
+  
 };
 
 const useAuthenticateUser = (onSuccess, onError) => {

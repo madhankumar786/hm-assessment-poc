@@ -1,8 +1,13 @@
 import { useMutation } from "react-query";
-import axios from 'axios';
+import { api } from 'utils';
+import config from '../config/config';
 
 const addUser = (user) => {
-    return axios.post('http://localhost:7000/users',user)
+    return api.post({
+      endpoint: config.endpoint.baseServiceOne,
+      path: 'users',
+      data: user,
+    })
 }
 
 export const useAddUser = (onSuccess, onError) => {
