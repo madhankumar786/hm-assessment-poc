@@ -5,10 +5,11 @@ import config from "../config/config";
 
 const authenticateUser = async (credentials) => {
   const { email, password } = credentials;
-  return api
+  return await api
     .get({
       endpoint: config.endpoint.baseServiceOne,
       path: "users",
+      isTokenRequired:"true"
     })
     .then((response) => {
       console.log(response, "response from login get call");

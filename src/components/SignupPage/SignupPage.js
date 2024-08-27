@@ -286,7 +286,7 @@ const Signup = () => {
                   }
                   error={!!errors.userType}
                 >
-                  <MenuItem value="Internal">Internal</MenuItem>
+                  <MenuItem value="User">Internal</MenuItem>
                   <MenuItem value="External">External</MenuItem>
                 </Select>
                 {errors.userType && (

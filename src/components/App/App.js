@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Routes, Route,useNavigate, Navigate } from "react-router-dom";
 import {
   LoginPage,
@@ -14,7 +14,6 @@ import {
 const CLIENT_ID = "Ov23liC80XliMtFoFAlD";
 
 function App() {
-  const [userData, setUserData] = useState();
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   useEffect(()=>{
@@ -22,25 +21,6 @@ function App() {
       navigate('/')
     }
   },[token])
-
-  async function getUserData() {
-    await fetch("http://localhost:4000/getUserData", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-        
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUserData(data);
-        console.log(data);
-      })
-      .catch((error) => console.log(error, "error from getUserData api"));
-  }
 
   const loginWithGithubLogin = () => {
     window.location.assign(

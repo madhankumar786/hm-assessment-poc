@@ -1,0 +1,35 @@
+/* BarChartCard.css */
+.chart-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .chart-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  
+  .more-icon {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+  }
+  
+  .chart-card:hover .more-icon {
+    opacity: 1;
+    visibility: visible;
+  }
+  

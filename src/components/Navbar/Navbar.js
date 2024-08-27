@@ -1,43 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  AppBar,
-  Toolbar,
   IconButton,
   Typography,
-  Button,
   Menu,
   MenuItem,
-  Box,
   useMediaQuery,
   useTheme,
+  Drawer,
+  List,
+  Divider,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
-import {
-  Menu as MenuIcon,
-  Close as CloseIcon,
-  Home as HomeIcon,
-  Info as dashboard,
-  ContactMail as ContactMailIcon,
-} from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { rolesConfig } from "utils";
-import { hover } from "@testing-library/user-event/dist/hover";
 
-const Navbar = ({ userData }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const menus = rolesConfig[localStorage.getItem("userType")].canAccess;
+  // const menus = rolesConfig[localStorage.getItem("userType")]?.canAccess;
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {
+    setMenus(rolesConfig[localStorage.getItem("userType")]?.canAccess|| rolesConfig['User'].canAccess);
+  }, [localStorage.getItem("accessToken")]);
 
   const handleMobileMenuOpen = () => {
     setMobileMenuOpen(true);
@@ -49,7 +40,6 @@ const Navbar = ({ userData }) => {
 
   const handleNavigation = (path) => {
     navigate(path);
-    handleMenuClose();
     handleMobileMenuClose();
   };
 
@@ -65,34 +55,39 @@ const Navbar = ({ userData }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
+          <Drawer
+            anchor="left"
             open={mobileMenuOpen}
             onClose={handleMobileMenuClose}
-            sx={{
-              width: "100%",
-            }}
+            sx={{ width: 250 }}
           >
-            <MenuItem onClick={() => handleNavigation("dashboard")}>
-              <item sx={{ mr: 1 }} /> Dashboard
-            </MenuItem>
-            <MenuItem onClick={() => handleNavigation("about")}>
-              {/* <InfoIcon sx={{ mr: 1 }} /> */}
-              About
-            </MenuItem>
-            <MenuItem onClick={() => handleNavigation("contact")}>
-              <ContactMailIcon sx={{ mr: 1 }} /> Contact
-            </MenuItem>
-            <MenuItem onClick={handleMobileMenuClose}>
-              <IconButton
-                edge="end"
-                color="inherit"
-                onClick={handleMobileMenuClose}
-              >
-                <CloseIcon />
-              </IconButton>
-            </MenuItem>
-          </Menu>
+            <div
+              role="presentation"
+              onClick={handleMobileMenuClose}
+              onKeyDown={handleMobileMenuClose}
+            >
+              <Typography variant="h6" sx={{ padding: 2 }}>
+                Menu
+              </Typography>
+              <Divider />
+              <List>
+                {menus?.map((item, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      onClick={() => handleNavigation(item)}
+                      sx={{ minWidth: "calc(100% - 30%)" }}
+                    >
+                      <ListItemText
+                        primary={item}
+                        sx={{ textTransform: "capitalize" }}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </div>
+          </Drawer>
         </>
       ) : (
         <>
@@ -107,12 +102,16 @@ const Navbar = ({ userData }) => {
                   color: isActive(`/${item.toLowerCase()}`)
                     ? "white"
                     : "inherit",
-                  '&:hover':{
-                      backgroundColor: isActive(`/${item.toLowerCase()}`)?  '#ececec' : '#cde9fa',
-                      color: isActive(`/${item.toLowerCase()}`) ? 'white' : '#19762d'
+                  "&:hover": {
+                    backgroundColor: isActive(`/${item.toLowerCase()}`)
+                      ? "#ececec"
+                      : "#cde9fa",
+                    color: isActive(`/${item.toLowerCase()}`)
+                      ? "black"
+                      : "#19762d",
                   },
-                  transition:'0.5s ease',
-                  cursor:'pointer'
+                  transition: "0.5s ease",
+                  cursor: "pointer",
                 }}
                 onClick={() => handleNavigation(item)}
               >

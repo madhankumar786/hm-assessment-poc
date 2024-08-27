@@ -27,8 +27,8 @@ app.get("/auth/github/callback", async (req, res) => {
     const response = await axios.post(
       "https://github.com/login/oauth/access_token",
       {
-        client_id: 'Ov23lizT2Bcw1QOa9Uzv',
-        client_secret: '6e11220363b66085f49bf18b7ea173982a495f0e',
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
         code,
       },
       {

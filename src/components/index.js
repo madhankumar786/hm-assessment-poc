@@ -8,7 +8,7 @@ export { default as Navbar } from './Navbar/Navbar';
 export { default as About } from './About/About';
 export { default as Contact } from './Contact/Contact';
 export { default as Dashboard } from './Dashboard/Dashboard';
-export { default as CheckUser } from './middleware/CheckUser';
 export { default as GitHubCallback } from './GitHubCallback/GitHubCallback';
 export { default as HomePage } from './HomePage/HomePage';
 export { default as ChartCard } from './ChartCard/ChartCard';
+export { default as AddNewCardModal } from './AddNewCardModal/AddNewCardModal';

@@ -1,5 +1,5 @@
 const rolesConfig = {
-    Internal: {
+    User: {
       canAccess: ['dashboard', 'about', 'contact','incidents'],
     },
     External: {

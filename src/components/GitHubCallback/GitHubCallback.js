@@ -1,54 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { CircularProgress, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import api from '../../utils/api/api';
+import { api } from 'utils';
+import config from 'config/config';
 
 const GitHubCallback = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    // const fetchAccessToken = async () => {
-    //   const params = new URLSearchParams(window.location.search);
-    //   const code = params.get('code');
-
-    //   if (code) {
-    //     try {
-    //       const response = await api.post('/github/callback', { code });
-    //       const { access_token } = response.data;
-
-    //       if (access_token) {
-    //         localStorage.setItem('accessToken', access_token);
-    //         navigate('/');
-    //       } else {
-    //         console.error('Failed to fetch access token');
-    //       }
-    //     } catch (error) {
-    //       console.error('Error during GitHub OAuth callback', error);
-    //     }
-    //   }
-    // };
-
-    // fetchAccessToken();
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const codeParams = urlParams.get("code");
     console.log(codeParams);
 
     if (codeParams && localStorage.getItem("accessToken") === null) {
-      async function getAccessToken() {
-        await fetch("http://localhost:4000/getAccessToken?code=" + codeParams, {
-          method: "GET",
-        })
-          .then((response) => {
-            return response.json();
+      const getAccessToken = async () => {
+        return api
+          .get({
+            endpoint: config.endpoint.internalService,
+            path: "getAccessToken",
+            params: {code:codeParams},
+            isTokenRequired:"true"
           })
-          .then((data) => {
-              localStorage.setItem("accessToken", data.access_token);
-            console.log(data, "data from getAccessToken");
-            if (data.access_token) {
-              navigate('/');
-            }
-          }).catch((error) => { console.log(error,'error from githubcallback component')})
-      }
+          .then((response) => {
+            localStorage.setItem("accessToken", response.data.access_token);
+            console.log(response, "Response from getAccessToken api");
+                  if (response.data.access_token) {
+                    navigate('/');
+                  }
+          })
+          .catch((error) => {
+            console.log(error, "error from login get call");
+          });
+        
+      };
       getAccessToken();
     }
   }, [navigate]);
