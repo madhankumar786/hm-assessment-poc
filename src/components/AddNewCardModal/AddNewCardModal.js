@@ -1,80 +1,126 @@
-import React from 'react';
-import { Modal, Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel, IconButton, Grid, Button, Paper, FormHelperText } from '@mui/material';
-import { Close as CloseIcon, BarChart as BarChartIcon, ShowChart as LineChartIcon, PieChart as PieChartIcon, StackedBarChart as ProgressBarChartIcon } from '@mui/icons-material';
-import { useForm, Controller } from 'react-hook-form';
+import React from "react";
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+  Grid,
+  Button,
+  Paper,
+  FormHelperText,
+} from "@mui/material";
+import {
+  Close as CloseIcon,
+  BarChart as BarChartIcon,
+  BarChartOutlined as TrendBarChartIcon,
+  ShowChart as LineChartIcon,
+  PieChart as PieChartIcon,
+  BarChartOutlined as StackedBarChart,
+  StackedBarChart as ProgressBarChartIcon,
+  DonutLargeOutlined as DonutChartIcon,
+  DashboardOutlined as AnomalyIcon,
+  CloudQueueOutlined as ServicesIcon,
+  PersonOutlineOutlined as UsersIcon,
+  CenterFocusWeakOutlined as ThreatsIcon,
+  MonitorHeartOutlined as ActivityIcon,
+  BugReportOutlined as WebMalwareIcon,
+  LanguageOutlined as WebTrafficIcon,
+  GridOnOutlined as ConnectedAppsIcon,
+  SelectAllOutlined as ResourceIcon,
+  
+} from "@mui/icons-material";
+import "./AddNewCardModal.css";
+import { useForm, Controller } from "react-hook-form";
 
 const cardTypes = [
-  { icon: <BarChartIcon sx={{color: "#Ff0000"}}/>, label: 'Services' },
-  { icon: <LineChartIcon sx={{color: "#FC0"}} />, label: 'Users' },
-  { icon: <PieChartIcon sx={{color: "#00ff00"}}/>, label: 'Web Malware' },
-  { icon: <ProgressBarChartIcon sx={{color: "0000ff"}} />, label: 'Incidents' },
-  { icon: <BarChartIcon sx={{color: "#289222"}}/>, label: 'Threats' },
-  { icon: <LineChartIcon sx={{color: "#4568ff"}} />, label: 'Anomaly' },
-  { icon: <PieChartIcon sx={{color: "#efefef"}}/>, label: 'Activity' },
-  { icon: <ProgressBarChartIcon sx={{color: "#889955"}} />, label: 'Web Traffic' },
-  { icon: <BarChartIcon sx={{color: "#456789"}} />, label: 'Web User' },
-  { icon: <LineChartIcon sx={{color: "#ff1111"}} />, label: 'Connected Apps' },
-  { icon: <PieChartIcon sx={{color: "#779988"}} />, label: 'Resource' }
+  { icon: <ServicesIcon sx={{ color: "#09e393" }} />, label: "Services" },
+  { icon: <UsersIcon sx={{ color: "#14f7a4" }} />, label: "Users" },
+  { icon: <WebMalwareIcon sx={{ color: "#ff5b24" }} />, label: "Web Malware" },
+  { icon: <ProgressBarChartIcon sx={{ color: "#f71414" }} />,label: "Incidents" },
+  { icon: <ThreatsIcon sx={{ color: "#ff5b24" }} />, label: "Threats" },
+  { icon: <AnomalyIcon sx={{ color: "#f7af14" }} />, label: "Anomaly" },
+  { icon: <ActivityIcon sx={{ color: "#0ecc86" }} />, label: "Activity" },
+  { icon: <WebTrafficIcon sx={{ color: "#289fff" }} />, label: "Web Traffic" },
+  { icon: <BarChartIcon sx={{ color: "#09e393" }} />, label: "Web User" },
+  { icon: <ConnectedAppsIcon sx={{ color: "#0ecc86" }} />, label: "Connected Apps" },
+  { icon: <ResourceIcon sx={{ color: "#f7af14" }} />, label: "Resource" },
 ];
 
-const chartTypes = [
-  { icon: <BarChartIcon sx={{color: "#289fff"}}/>, label: 'Bar Chart' },
-  { icon: <LineChartIcon sx={{color: "#00ff00"}} />, label: 'Line Chart' },
-  { icon: <PieChartIcon sx={{color: "#0000ff"}} />, label: 'Pie Chart' },
-  { icon: <ProgressBarChartIcon sx={{color: "#ff0000"}} />, label: 'Progress Bar' }
+const trendChart = [
+  { icon: <LineChartIcon />, label: "Line Chart", name:'line' },
+  { icon: <TrendBarChartIcon />, label: "Bar Chart", name:'bar' },
+];
+const breakdownChart = [
+  {
+    icon: <DonutChartIcon />,
+    label: "Donut Chart",
+    name:'donut'
+  },
+  { icon: <StackedBarChart sx={{transform:'rotate(90deg)'}} />, label: "Stacked Bar Chart" , name:'stackedBar'},
 ];
 
 const AddNewCardModal = ({ open, handleClose }) => {
-  const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      cardType: '',
-      savedView: '',
-      cardTitle: '',
-      show: '',
-      by: '',
-      now: '',
-      chartType: ''
-    }
+      cardType: "",
+      savedView: "",
+      cardTitle: "",
+      show: "",
+      by: "",
+      now: "",
+      chartType: "",
+    },
   });
 
-  const cardTypeValue = watch('cardType');
-  const chartTypeValue = watch('chartType');
+  const cardTypeValue = watch("cardType");
+  const chartTypeValue = watch("chartType");
 
   const handleSave = (data) => {
-    console.log('Form Data:', data);
-    handleClose(); 
+    console.log("Form Data:", data);
+    handleClose();
   };
 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
-          position: 'relative',
-          width: '90%',
+          position: "relative",
+          width: "90%",
           maxWidth: 1000,
-          height: '90%',
-          maxHeight: '90%',
-          bgcolor: 'background.paper',
+          height: "90%",
+          maxHeight: "90%",
+          bgcolor: "background.paper",
           borderRadius: 2,
-          m: 'auto',
+          m: "auto",
           mt: 5,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
         }}
       >
         {/* Modal Header */}
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
             p: 1,
-            borderBottom: '1px solid grey',
-            backgroundColor: 'background.default',
+            borderBottom: "1px solid grey",
+            backgroundColor: "background.default",
           }}
         >
-          <Typography variant="h6">Add New Card</Typography>
+          <Typography sx={{fontSize:'16px',p:1}} variant="h6">Add New Card</Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
@@ -83,215 +129,341 @@ const AddNewCardModal = ({ open, handleClose }) => {
         {/* Modal Body */}
         <Box
           sx={{
-            display: 'flex',
-            flex: '1',
-            overflow: 'hidden',
+            display: "flex",
+            flex: "1",
+            overflow: "hidden",
           }}
         >
           {/* Card Preview Section */}
-          <Box
-            sx={{
-              flex: '1',
-              mr: 3,
-              maxHeight: '100%',
-              overflowY: 'auto',
-              border: '1px solid grey',
-              borderRadius: 1,
-              p: 2,
-            }}
-          >
-            <Typography variant="subtitle1" gutterBottom>Card Preview</Typography>
-            <Paper elevation={3} sx={{ p: 2, textAlign: 'left' }}>
-              <Typography variant="h6">{watch('cardTitle') || 'Card Title'}</Typography>
-              <Typography variant="body2">{watch('cardType') || 'Card Type'}</Typography>
-              <Typography variant="body2">{watch('show') || 'Show: Summary'}</Typography>
-              <Typography variant="body2">{watch('by') || 'By: Date'}</Typography>
-              <Typography variant="body2">{watch('now') || 'Now: Last 24 Hours'}</Typography>
-              <Typography variant="body2">{watch('chartType') || 'Chart Type: Bar Chart'}</Typography>
-            </Paper>
-          </Box>
 
           {/* Form Section */}
           <Box
             sx={{
-              flex: '2',
-              overflowY: 'auto',
+              flex: "2",
+              overflowY: "auto",
               p: 2,
             }}
           >
             {/* Card Type */}
-            <Typography variant="subtitle1" gutterBottom>Card Type</Typography>
-            <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Typography variant="subtitle1" gutterBottom sx={{fontSize:'16px', color:'#9c9898'}}>
+              What kind of card do you want to add to your dashboard
+            </Typography>
+            <Grid
+              container
+              className="cardTypesHolder"
+              spacing={2}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alighItems: "center",
+                p: 1,
+                backgound:'#f7f7f7',
+                my:1
+              }}
+            >
               {cardTypes.map((type) => (
-                <Grid item xs={2.4} key={type.label} sx={{flexBasis:'16%'}}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      flexBasis: '16%',
-                      border: cardTypeValue === type.label ? '2px solid blue' : '1px solid grey',
-                      borderRadius: 1,
-                      p: 1,
-                      '&:hover': {
-                        borderColor: 'blue',
-                        boxShadow: '0 0 10px rgba(0, 0, 255, 0.3)',
-                      },
-                    }}
-                    onClick={() => setValue('cardType', type.label)}
-                  >
-                    {type.icon}
-                    <Typography sx={{ fontSize: '10px', mt: 1 }}>{type.label}</Typography>
-                  </Box>
-                </Grid>
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                    flexBasis: "5%",
+                    background:"#ffffff",
+                    border:
+                      cardTypeValue === type.label
+                        ? "2px solid #289fff"
+                        : "1px solid grey",
+                    borderRadius: "2px",
+                    p: 1,
+                    mx: 1,
+                    "&:hover": {
+                      borderColor: "#289fff",
+                      boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
+                    },
+                    textAlign: "center",
+                  }}
+                  className="itemsTesting"
+                  onClick={() => setValue("cardType", type.label)}
+                >
+                  {type.icon}
+                  <Typography sx={{ m: 0, p: 0, fontSize: "10px" }}>
+                    {type.label}
+                  </Typography>
+                </Box>
               ))}
             </Grid>
 
             {/* Saved View */}
-            <FormControl fullWidth margin="normal" error={!!errors.savedView}>
-              <InputLabel sx={{fontSize:'14px'}}>Saved View</InputLabel>
-              <Controller
-                name="savedView"
-                control={control}
-                rules={{ required: 'Saved View is required' }}
-                render={({ field }) => (
-                  <>
-                    <Select
-                      {...field}
-                      size="small"
-                      label="Saved View"
-                    >
-                      <MenuItem value="view1">View 1</MenuItem>
-                      <MenuItem value="view2">View 2</MenuItem>
-                      <MenuItem value="view3">View 3</MenuItem>
-                    </Select>
-                    {errors.savedView && <FormHelperText>{errors.savedView.message}</FormHelperText>}
-                  </>
-                )}
-              />
-            </FormControl>
-
-            {/* Card Title */}
-            <Controller
-              name="cardTitle"
-              control={control}
-              render={({ field }) => (
-                <TextField
+            <Grid container>
+              <Grid md={3}>
+                <FormControl
                   fullWidth
                   margin="normal"
-                  label="Card Title"
-                  size="small"
-                  InputProps={{
-                    style: { fontSize: 12 }, 
+                  error={!!errors.savedView}
+                >
+                  <InputLabel sx={{ fontSize: "12px" }}>Saved View</InputLabel>
+                  <Controller
+                    name="savedView"
+                    control={control}
+                    rules={{ required: "Saved View is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select {...field} size="small" label="Saved View">
+                          <MenuItem value="view1">View 1</MenuItem>
+                          <MenuItem value="view2">View 2</MenuItem>
+                          <MenuItem value="view3">View 3</MenuItem>
+                        </Select>
+                        {errors.savedView && (
+                          <FormHelperText>
+                            {errors.savedView.message}
+                          </FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid md={9}></Grid>
+              <Grid md={7}>
+                <Typography sx={{ fontSize: "16px", color: "#9c9898", py: 1 }}>
+                  Customize the Dashboard Card
+                </Typography>
+                <Box
+                  sx={{
+                    flex: "1",
+                    mr: 3,
+                    maxHeight: "100%",
+                    overflowY: "auto",
+                    border: "1px solid grey",
+                    borderRadius: "2px",
+                    minHeight:'250px',
+                    p: 2,
                   }}
-                  {...field}
-                  autoFocus
-                  error={!!errors.cardTitle}
-                  helperText={errors.cardTitle ? errors.cardTitle.message : ""}
+                >
+                  <Box elevation={3} sx={{ p: 0, textAlign: "left" }}>
+                    <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'500',color:'#000000'}}>
+                      {watch("cardTitle") || "Card Title"}
+                    </Typography>
+                    <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898'}}>
+                      Total data volume for 6 services - Last 7 days
+                    </Typography>
+                    <Box sx={{display:'block',py:1}}>
+                      <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h3">22.6</Typography>
+                      <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h6">GB</Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
+                      {watch("cardType") || "Card Type"}
+                    </Typography>
+                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
+                      {watch("show") || "Show: Summary"}
+                    </Typography>
+                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
+                      {watch("by") || "By: Date"}
+                    </Typography>
+                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
+                      {watch("now") || "Now: Last 24 Hours"}
+                    </Typography>
+                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
+                      {watch("chartType") || "Chart Type: Bar Chart"}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid md={4} sx={{ p: 2 }}>
+                {/* Card Title */}
+                <Controller
+                  name="cardTitle"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ color: "red", borderRadius: "none" }}
+                      fullWidth
+                      margin="normal"
+                      label="Card Title"
+                      size="small"
+                      InputProps={{
+                        style: { fontSize: 14 },
+                      }}
+                      {...field}
+                      autoFocus
+                      error={!!errors.cardTitle}
+                      helperText={
+                        errors.cardTitle ? errors.cardTitle.message : ""
+                      }
+                    />
+                  )}
                 />
-              )}
-            />
 
-            {/* Show */}
-            <FormControl fullWidth margin="normal" error={!!errors.show}>
-              <InputLabel sx={{fontSize:'14px'}}>Show</InputLabel>
-              <Controller
-                name="show"
-                control={control}
-                rules={{ required: 'Show option is required' }}
-                render={({ field }) => (
-                  <>
-                    <Select
-                      {...field}
-                      size="small"
-                      label="Show"
+                {/* Show */}
+                <FormControl fullWidth margin="normal" error={!!errors.show}>
+                  <InputLabel sx={{ fontSize: "14px" }}>Show</InputLabel>
+                  <Controller
+                    name="show"
+                    control={control}
+                    rules={{ required: "Show option is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select {...field} size="small" label="Show">
+                          <MenuItem value="summary">Summary</MenuItem>
+                          <MenuItem value="detailed">Detailed</MenuItem>
+                        </Select>
+                        {errors.show && (
+                          <FormHelperText>{errors.show.message}</FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </FormControl>
+
+                {/* By */}
+                <FormControl fullWidth margin="normal" error={!!errors.by}>
+                  <InputLabel sx={{ fontSize: "14px" }}>By</InputLabel>
+                  <Controller
+                    name="by"
+                    control={control}
+                    rules={{ required: "By option is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select {...field} size="small" label="By">
+                          <MenuItem value="date">Date</MenuItem>
+                          <MenuItem value="category">Category</MenuItem>
+                        </Select>
+                        {errors.by && (
+                          <FormHelperText>{errors.by.message}</FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </FormControl>
+
+                {/* Now */}
+                <FormControl fullWidth margin="normal" error={!!errors.now}>
+                  <InputLabel sx={{ fontSize: "14px" }}>Now</InputLabel>
+                  <Controller
+                    name="now"
+                    control={control}
+                    rules={{ required: "Now option is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select {...field} size="small" label="Now">
+                          <MenuItem value="last24hours">Last 24 Hours</MenuItem>
+                          <MenuItem value="last7days">Last 7 Days</MenuItem>
+                          <MenuItem value="last30days">Last 30 Days</MenuItem>
+                        </Select>
+                        {errors.now && (
+                          <FormHelperText>{errors.now.message}</FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </FormControl>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    pt:1
+                  }}
+                >
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ fontSize: "14px", color: "grey" }}
+                      gutterBottom
                     >
-                      <MenuItem value="summary">Summary</MenuItem>
-                      <MenuItem value="detailed">Detailed</MenuItem>
-                    </Select>
-                    {errors.show && <FormHelperText>{errors.show.message}</FormHelperText>}
-                  </>
-                )}
-              />
-            </FormControl>
-
-            {/* By */}
-            <FormControl fullWidth margin="normal" error={!!errors.by}>
-              <InputLabel sx={{fontSize:'14px'}}>By</InputLabel>
-              <Controller
-                name="by"
-                control={control}
-                rules={{ required: 'By option is required' }}
-                render={({ field }) => (
-                  <>
-                    <Select
-                      {...field}
-                      size="small"
-                      label="By"
+                      Trend
+                    </Typography>
+                    {trendChart?.map((type) => (
+                      <Box
+                        key={type.label}
+                        sx={{
+                          display: "inline-block",
+                          verticalAlign: "middle",
+                          p: 0.5,
+                        }}
+                      >
+                        <IconButton
+                          sx={{
+                            background:
+                              chartTypeValue === type.label
+                                ? "#ededed"
+                                : "transparent",
+                            color:
+                              chartTypeValue === type.label
+                                ? "#289fff"
+                                : "#000000",
+                            opacity:
+                              chartTypeValue === type.label ? "1" : "0.5",
+                            borderRadius: "50%",
+                            p: 1,
+                            "&:hover": {
+                              borderColor: "#289fff",
+                              boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
+                            },
+                          }}
+                          onClick={() => setValue("chartType", type.label)}
+                        >
+                          {type.icon}
+                        </IconButton>
+                      </Box>
+                    ))}
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{ fontSize: "14px", color: "grey" }}
+                      gutterBottom
                     >
-                      <MenuItem value="date">Date</MenuItem>
-                      <MenuItem value="category">Category</MenuItem>
-                    </Select>
-                    {errors.by && <FormHelperText>{errors.by.message}</FormHelperText>}
-                  </>
-                )}
-              />
-            </FormControl>
-
-            {/* Now */}
-            <FormControl fullWidth margin="normal" error={!!errors.now}>
-              <InputLabel sx={{fontSize:'14px'}}>Now</InputLabel>
-              <Controller
-                name="now"
-                control={control}
-                rules={{ required: 'Now option is required' }}
-                render={({ field }) => (
-                  <>
-                    <Select
-                      {...field}
-                      size="small"
-                      label="Now"
-                    >
-                      <MenuItem value="last24hours">Last 24 Hours</MenuItem>
-                      <MenuItem value="last7days">Last 7 Days</MenuItem>
-                      <MenuItem value="last30days">Last 30 Days</MenuItem>
-                    </Select>
-                    {errors.now && <FormHelperText>{errors.now.message}</FormHelperText>}
-                  </>
-                )}
-              />
-            </FormControl>
-
-            {/* Chart Type */}
-            <Typography variant="subtitle1" gutterBottom>Chart Type</Typography>
-            <Grid container spacing={2} sx={{ mb: 2 }}>
-              {chartTypes.map((type) => (
-                <Grid item xs={3} key={type.label}>
-                  <IconButton
-                    sx={{
-                      border: chartTypeValue === type.label ? '2px solid blue' : '1px solid grey',
-                      borderRadius: '50%',
-                      p: 1,
-                      '&:hover': {
-                        borderColor: 'blue',
-                        boxShadow: '0 0 10px rgba(0, 0, 255, 0.3)',
-                      },
-                    }}
-                    onClick={() => setValue('chartType', type.label)}
-                  >
-                    {type.icon}
-                  </IconButton>
-                  <Typography sx={{ fontSize: '14px', mt: 1, textAlign: 'left' }}>{type.label}</Typography>
-                </Grid>
-              ))}
+                      Breakdown
+                    </Typography>
+                    {breakdownChart?.map((type) => (
+                      <Box
+                        key={type.label}
+                        sx={{
+                          display: "inline-block",
+                          verticalAlign: "middle",
+                          p: 0.5,
+                        }}
+                      >
+                        <IconButton
+                          sx={{
+                            background:
+                              chartTypeValue === type.label
+                                ? "#ededed"
+                                : "transparent",
+                            color:
+                              chartTypeValue === type.label
+                                ? "#289fff"
+                                : "#000000",
+                            opacity:
+                              chartTypeValue === type.label ? "1" : "0.5",
+                            borderRadius: "50%",
+                            p: 1,
+                            "&:hover": {
+                              borderColor: "#289fff",
+                              boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
+                            },
+                          }}
+                          onClick={() => setValue("chartType", type.label)}
+                        >
+                          {type.icon}
+                        </IconButton>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              </Grid>
+              {/* Footer Buttons */}
+              <Grid
+                md={12}
+                sx={{ display: "block", textAlign: "right", mt: 3 }}
+              >
+                <Button variant="outlined" onClick={handleClose} sx={{ mr: 1 }}>
+                  Cancel
+                </Button>
+                <Button variant="contained" onClick={handleSubmit(handleSave)}>
+                  Save
+                </Button>
+              </Grid>
             </Grid>
-
-            {/* Footer Buttons */}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-              <Button variant="outlined" onClick={handleClose} sx={{ mr: 1 }}>Cancel</Button>
-              <Button variant="contained" onClick={handleSubmit(handleSave)}>Save</Button>
-            </Box>
           </Box>
         </Box>
       </Box>

@@ -9,6 +9,7 @@
   
   .chart-card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #289fff; 
   }
   
   .chart-header {
@@ -23,11 +24,10 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    position: absolute;
+    position: absolute !important;
     right: 16px;
     top: 16px;
   }
-  
   .chart-card:hover .more-icon {
     opacity: 1;
     visibility: visible;

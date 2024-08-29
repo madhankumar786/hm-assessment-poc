@@ -1,5 +1,13 @@
-import React from "react";
-import { Card, CardContent, IconButton, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import {
   PieChart,
   Pie,
@@ -13,9 +21,10 @@ import {
   Legend,
   BarChart,
   Bar,
+  ResponsiveContainer,
 } from "recharts";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import './ChartCard.css';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import "./ChartCard.css";
 
 const ChartCard = ({
   title,
@@ -26,111 +35,142 @@ const ChartCard = ({
   legend,
   cartesianGrid,
   tooltip,
-  handleOpen
+  handleOpen,
 }) => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-  
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const renderChart = () => {
     switch (type) {
       case "line":
         return (
-          <LineChart width={400} height={200} data={data}>
-            {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
-            <XAxis dataKey="name" />
-            <YAxis />
-            {tooltip && <Tooltip />}
-            {legend && <Legend />}
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
+          <Grid item xs={12} sm={6} md={6} lg={6}>
+            <>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={data}>
+                  {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  {tooltip && <Tooltip />}
+                  {legend && <Legend />}
+                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
+            </>
+          </Grid>
         );
       case "bar":
         return (
-          <BarChart width={500} height={200} data={data}>
-            {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
-            <XAxis dataKey="name" />
-            <YAxis />
-            {tooltip && <Tooltip />}
-            {legend && <Legend />}
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={data}>
+                {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
+                <XAxis dataKey="name" />
+                <YAxis />
+                {tooltip && <Tooltip />}
+                {legend && <Legend />}
+                <Bar dataKey="value" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </>
         );
       case "stackedBar":
         return (
-          <BarChart
-            width={500}
-            height={200}
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-            <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-            <Bar dataKey="amt" stackId="a" fill="#289fff" />
-          </BarChart>
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart
+                data={data}
+                layout="horizontal"
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
+                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+                <Bar dataKey="amt" stackId="a" fill="#289fff" />
+              </BarChart>
+            </ResponsiveContainer>
+          </>
         );
       case "donut":
         return (
-          <PieChart width={500} height={200}>
-            <Pie
-              data={data}
-              cx={120}
-              cy={70}
-              innerRadius={70}
-              outerRadius={75}
-              fill="#8884d8"
-              paddingAngle={5}
-              dataKey="value"
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            {tooltip && <Tooltip />}
-            {legend && (
-              <Legend
-                layout="vertical"
-                verticalAlign="middle"
-                align="right"
-                wrapperStyle={{ width: "150px", right: "10px" }}
-              />
-            )}
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart >
+                <Pie
+                  data={data}
+                  cx={120}
+                  cy={70}
+                  innerRadius={70}
+                  outerRadius={75}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                {tooltip && <Tooltip />}
+                {legend && (
+                  <Legend
+                    layout="vertical"
+                    verticalAlign="middle"
+                    align="right"
+                    wrapperStyle={{ width: "150px", right: "10px" }}
+                  />
+                )}
 
-            {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
-          </PieChart>
+                {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
+              </PieChart>
+            </ResponsiveContainer>
+          </>
         );
       default:
         return null;
     }
   };
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleDelete = () => {
+    console.log("executing handleDelete");
+  };
+  const handleEdit = () => {
+    handleOpen();
+    setAnchorEl(null);
+  };
   return (
-    <Card
-      // sx={{
-      //   "&:hover": {
-      //     borderColor: "blue",
-      //     boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
-      //   },
-      // }}
-      className="chart-card"
-    >
-      <IconButton 
-          className="more-icon" 
-          onClick={handleOpen}
-        >
-          <MoreVertIcon />
-        </IconButton>
+    <Card className="chart-card">
+      <IconButton className="more-icon" onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+      </Menu>
       <CardContent>
         <Typography
           variant="h3"

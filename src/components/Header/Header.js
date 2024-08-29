@@ -11,7 +11,10 @@ import {
   DialogTitle,
   DialogActions,
   Box,
+  useTheme,
+  useMediaQuery
 } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -20,13 +23,16 @@ import { Navbar } from "components";
 import axios from "axios";
 
 const Logo = styled("img")({
-  height: "40px",
+  height: "25px",
   marginRight: "16px",
 });
 
 function Header() {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -38,9 +44,9 @@ function Header() {
           },
         })
         .then((response) => {
-          localStorage.setItem("userType", response.data.type);
-          localStorage.setItem("name", response.data.login);
-          localStorage.setItem("profilePic", response.data.avatar_url);
+          localStorage.setItem('userType', response.data.type);
+          localStorage.setItem('name', response.data.login);
+          localStorage.setItem('profilePic', response.data.avatar_url);
           console.log(response.data, "getUserData api response");
         })
         .catch((error) => {
@@ -67,26 +73,47 @@ function Header() {
     navigate("/dashboard");
   };
 
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
   return (
     <>
       <AppBar position="static">
         <Toolbar>
+        {isMobile && (
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleDrawerToggle}
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              margin: theme.spacing(1) 
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Box sx={{flexGrow:3, textAlign: isMobile ? 'center' : 'left',pl:isMobile ? '20px':'0px'}}>
           <Logo
             onClick={handleOnClickAppTitle}
             src={AppLogo}
             alt="App Logo"
-            sx={{ cursor: "pointer", flex: 1 }}
+            sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer'}}
           />
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, cursor: "pointer", flex: 1 }}
+            sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer'}}
             onClick={handleOnClickAppTitle}
           >
             Company
           </Typography>
+
+        </Box>
           <Box sx={{ flexBasis: "850px", textAlign: "center", flex: 16 }}>
-            <Navbar />
+            <Navbar drawerOpen={drawerOpen} handleDrawerToggle={handleDrawerToggle} />
           </Box>
           <Box sx={{ flex: 1 }}>
             <Tooltip title="Logout">

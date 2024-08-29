@@ -1,10 +1,8 @@
 // Dashboard.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Container, Grid } from '@mui/material';
 import { AddNewCardModal, ChartCard} from 'components';
-import { api } from 'utils';
-import config from 'config/config';
 
 const chartData = [
   { name: 'Page A', value: 4000 },
@@ -68,15 +66,6 @@ const Dashboard = () => {
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
-  useEffect(() => {
-    api.get(
-      {
-        endpoint: config.endpoint.testService,
-        path: "todos",
-        isTokenRequired : "false"
-      }
-    )
-  },[])
   return (
     <Container>
       <Box sx={{textAlign:'right', p:2}}>
@@ -84,7 +73,7 @@ const Dashboard = () => {
         <AddNewCardModal open={modalOpen} handleOpen={handleOpen} handleClose={handleClose} />
       </Box>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
+        <Grid item xs={12} sm={6} md={6} lg={6} >
           <ChartCard
             title="Line Chart"
             description="A line chart showing data trends"

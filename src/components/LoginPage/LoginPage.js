@@ -21,7 +21,6 @@ const LoginPage = ({handleLoginWithGithub}) => {
  
 
   const handleSuccess = (user) => {
-    console.log(user,'user data from baba')
     localStorage.setItem('userType', user.userType);
     localStorage.setItem('email', user.email);
     localStorage.setItem('userName', user.name);

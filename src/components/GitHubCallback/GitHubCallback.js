@@ -25,7 +25,7 @@ const GitHubCallback = () => {
             localStorage.setItem("accessToken", response.data.access_token);
             console.log(response, "Response from getAccessToken api");
                   if (response.data.access_token) {
-                    navigate('/');
+                    navigate('/dashboard');
                   }
           })
           .catch((error) => {

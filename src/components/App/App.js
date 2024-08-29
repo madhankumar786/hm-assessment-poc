@@ -41,14 +41,14 @@ function App() {
           path="/"
           element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
         >
+           <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="incidents" element={<Incidents />} />
-          <Route index element={<Dashboard />} /> {/* Default route */}
         </Route>
-        <Route path="*" element={<Navigate to="/login" />} /> {/* Fallback route */}
+        <Route path="*" element={<Navigate to="/login" />} /> 
       </Routes>
       </header>
     </div>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  IconButton,
   Typography,
-  Menu,
   MenuItem,
   useMediaQuery,
   useTheme,
@@ -12,59 +10,43 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { rolesConfig } from "utils";
+import rolesConfig from "config/rolesConfig";
 
-const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+const Navbar = ({drawerOpen,handleDrawerToggle}) => {
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  // const menus = rolesConfig[localStorage.getItem("userType")]?.canAccess;
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
-    setMenus(rolesConfig[localStorage.getItem("userType")]?.canAccess|| rolesConfig['User'].canAccess);
+    setMenus(rolesConfig[localStorage.getItem("userType")]?.canAccess || rolesConfig['User'].canAccess);
   }, [localStorage.getItem("accessToken")]);
-
-  const handleMobileMenuOpen = () => {
-    setMobileMenuOpen(true);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMenuOpen(false);
-  };
-
+ 
   const handleNavigation = (path) => {
     navigate(path);
-    handleMobileMenuClose();
+    handleDrawerToggle();
   };
 
   return (
     <>
       {isMobile ? (
         <>
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleMobileMenuOpen}
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
           <Drawer
             anchor="left"
-            open={mobileMenuOpen}
-            onClose={handleMobileMenuClose}
+           
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
             sx={{ width: 250 }}
           >
             <div
               role="presentation"
-              onClick={handleMobileMenuClose}
-              onKeyDown={handleMobileMenuClose}
+             
+              onClick={handleDrawerToggle}
+              onKeyDown={handleDrawerToggle}
             >
               <Typography variant="h6" sx={{ padding: 2 }}>
                 Menu
@@ -91,9 +73,10 @@ const Navbar = () => {
         </>
       ) : (
         <>
-          {menus?.map((item) => {
+          {menus?.map((item,index) => {
             return (
               <MenuItem
+              key={index}
                 sx={{
                   display: "inline-block",
                   borderBottom: isActive(`/${item.toLowerCase()}`)
