@@ -4,7 +4,7 @@ import { TextField, Button, Typography, InputAdornment, Box, Snackbar, Alert } f
 import { Email as EmailIcon, Lock as LockIcon, GitHub as GitHubIcon } from '@mui/icons-material';
 import logo from '../../assets/jpg/logo.jpg'; 
 import backgroundImage from '../../assets/jpg/loginbg.jpg'; 
-import useAuthenticateUser from 'hooks/useAuthenticateUser';
+import { useAuthenticateUser } from 'hooks';
 import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = ({handleLoginWithGithub}) => {

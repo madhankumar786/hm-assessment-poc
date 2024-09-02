@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,memo } from 'react';
 import {
   Card,
   CardContent,
@@ -26,7 +26,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "./ChartCard.css";
 
-const ChartCard = ({
+const ChartCard = React.memo(({
   title,
   description,
   memoryUsed,
@@ -36,16 +36,23 @@ const ChartCard = ({
   cartesianGrid,
   tooltip,
   handleOpen,
+  onEdit,
+  chartData,
+  id,
+  handleDeleteClick,
+  handleConfirmDelete,
+  isDeleteModalOpen,
+  setIsDeleteModalOpen,
 }) => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const [anchorEl, setAnchorEl] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const open = Boolean(anchorEl);
 
   const renderChart = () => {
     switch (type) {
       case "line":
         return (
-          <Grid item xs={12} sm={6} md={6} lg={6}>
             <>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={data}>
@@ -58,7 +65,6 @@ const ChartCard = ({
                 </LineChart>
               </ResponsiveContainer>
             </>
-          </Grid>
         );
       case "bar":
         return (
@@ -132,8 +138,6 @@ const ChartCard = ({
                     wrapperStyle={{ width: "150px", right: "10px" }}
                   />
                 )}
-
-                {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
               </PieChart>
             </ResponsiveContainer>
           </>
@@ -150,14 +154,22 @@ const ChartCard = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleDelete = () => {
+  const handleDelete = (id) => {
     console.log("executing handleDelete");
+    handleDeleteClick(id)
   };
   const handleEdit = () => {
-    handleOpen();
     setAnchorEl(null);
+    // handleOpen();
+    if (onEdit) {
+      onEdit(chartData); // Ensure onEdit is called with chartData
+    } else {
+      console.error('onEdit is not a function'); // Add an error message for clarity
+    }
   };
+  
   return (
+    <>
     <Card className="chart-card">
       <IconButton className="more-icon" onClick={handleClick}>
         <MoreVertIcon />
@@ -169,7 +181,7 @@ const ChartCard = ({
         onClose={handleClose}
       >
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
       </Menu>
       <CardContent>
         <Typography
@@ -195,7 +207,8 @@ const ChartCard = ({
         <div style={{ marginTop: "20px" }}>{renderChart()}</div>
       </CardContent>
     </Card>
+    </>
   );
-};
+});
 
 export default ChartCard;

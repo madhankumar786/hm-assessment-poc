@@ -1,16 +1,18 @@
 import { useMutation } from "react-query";
-import { api } from 'utils';
-import config from '../config/config';
+import { apiClients } from 'utils';
 
 const addUser = (user) => {
-    return api.post({
-      endpoint: config.endpoint.baseServiceOne,
-      path: 'users',
-      data: user,
-    })
+    return apiClients.service1Api.post('/users',user)
+    .then(response => {
+      console.log('Service 2 Fixed Instance Response:', response.data)
+      return response;
+    } )
+    .catch(error => {
+      console.error('Service 2 Fixed Instance Error:', error)
+    });
 }
 
-export const useAddUser = (onSuccess, onError) => {
+const useAddUser = (onSuccess, onError) => {
     return useMutation(addUser, {
         onSuccess: (data) => {
           if (onSuccess) onSuccess(data);
@@ -20,3 +22,5 @@ export const useAddUser = (onSuccess, onError) => {
         },
       })
 }
+
+export default useAddUser;

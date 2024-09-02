@@ -12,3 +12,4 @@ export { default as GitHubCallback } from './GitHubCallback/GitHubCallback';
 export { default as HomePage } from './HomePage/HomePage';
 export { default as ChartCard } from './ChartCard/ChartCard';
 export { default as AddNewCardModal } from './AddNewCardModal/AddNewCardModal';
+export { default as ConfirmationModal } from './ConfirmationModal/ConfirmationModal';

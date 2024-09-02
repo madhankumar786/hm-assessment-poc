@@ -24,13 +24,35 @@
       "password": "M@ram123",
       "userType": "External"
     },
-       {
-      "id": "8717",
-      "name": "test",
-      "email": "test@gmail.com",
-      "phone": "8877667766",
-      "password": "M@test123",
-      "userType": "External"
+    {
+      "id": "8bd8",
+      "name": "yadhu",
+      "email": "yadhu@gmail.com",
+      "phone": "9877887766",
+      "password": "M@yadhu123",
+      "userType": "User"
+    }
+  ],
+  "dashboard": [
+    {
+      "id": "cfdf",
+      "cardType": "Resource",
+      "savedView": "view2",
+      "cardTitle": "Donut Chart one",
+      "show": "detailed",
+      "by": "category",
+      "now": "last24hours",
+      "chartType": "donut"
+    },
+    {
+      "id": "8a42",
+      "cardType": "Resource",
+      "savedView": "view2",
+      "cardTitle": "Chart Three changed",
+      "show": "summary",
+      "by": "category",
+      "now": "last24hours",
+      "chartType": "line"
     }
   ]
 }

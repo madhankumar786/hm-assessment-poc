@@ -1,16 +1,12 @@
-import { useMutation } from "react-query";
-import { api } from "utils";
-import * as utils from 'utils';
-import config from "../config/config";
+import { useMutation } from 'react-query';
+import { apiClients } from "utils";
+import * as utils from "utils";
 
 const authenticateUser = async (credentials) => {
   const { email, password } = credentials;
-  return await api
-    .get({
-      endpoint: config.endpoint.baseServiceOne,
-      path: "users",
-      isTokenRequired:"true"
-    })
+
+  return await apiClients.service1Api
+    .get("/users")
     .then((response) => {
       console.log(response, "response from login get call");
       const users = response.data;
@@ -21,22 +17,20 @@ const authenticateUser = async (credentials) => {
       if (!user) {
         throw new Error("Invalid email or password");
       }
-      if(user.email){
-        utils.generic.generateAccessToken(user.email).then(res => 
-          {
-            localStorage.setItem('accessToken',res)
-          })
+      if (user.email) {
+        utils.generic.generateAccessToken(user.email).then((res) => {
+          localStorage.setItem("accessToken", res);
+        });
       }
       return user;
     })
     .catch((error) => {
       console.log(error, "error from login get call");
     });
-  
 };
 
 const useAuthenticateUser = (onSuccess, onError) => {
-  return useMutation(authenticateUser, {
+  return useMutation({mutationFn:authenticateUser,
     onSuccess: (data) => {
       if (onSuccess) onSuccess(data);
     },

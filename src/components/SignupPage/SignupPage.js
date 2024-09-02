@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useAddUser } from "hooks/useAddUser";
+import { useAddUser } from "hooks";
 import {
   TextField,
   Button,

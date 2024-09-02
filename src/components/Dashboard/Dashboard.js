@@ -1,8 +1,11 @@
 // Dashboard.js
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Button, Container, Grid } from '@mui/material';
-import { AddNewCardModal, ChartCard} from 'components';
+import { AddNewCardModal, ChartCard, ConfirmationModal } from 'components';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetDashboardCharts, useChartDelete, useUpdateChart } from 'hooks';
+import { setCharts, removeChart} from 'store/chartsSlice';
 
 const chartData = [
   { name: 'Page A', value: 4000 },
@@ -59,76 +62,108 @@ const stackedBarData = [
   },
 ];
 
-
 const Dashboard = () => {
+  const { charts } = useSelector((state) => state.dashboard);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedId,setSelectedId]= useState();
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const dispatch = useDispatch();
+  const [selectedChart, setSelectedChart] = useState(null);
 
+  const handleSuccess = (data) => {
+    console.log('Data fetched successfully:', data);
+    dispatch(setCharts(data?.data));
+  };
+
+  const handleError = (error) => {
+    console.error('Error fetching data:', error);
+    // dispatch(setError(error.message));
+  };
+
+  // Call the custom hook
+  const { data, isLoading, isError, error } = useGetDashboardCharts({
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
+
+  console.log(charts, 'charts from redux-toolkit')
+  console.log(isDeleteModalOpen, 'isDeleteModalOpen')
+
+  const { mutate: deleteChart } = useChartDelete(
+    () => {
+      dispatch(removeChart(selectedId));
+      setIsDeleteModalOpen(!isDeleteModalOpen);
+    },
+    (error) => {
+      console.error('Error deleting chart:', error);
+    }
+  );
+
+  const handleConfirmDelete = () => {
+    if (selectedId) {
+      deleteChart(selectedId);
+    }
+  };
+ 
+  const handleDeleteChart = (chartId) => {
+    setSelectedId(chartId); 
+    setIsDeleteModalOpen(!isDeleteModalOpen);        
+  };
+
+  // Cancel deletion and close the modal
+  const cancelDelete = () => {
+    setIsDeleteModalOpen(!isDeleteModalOpen);
+  };
+
+  const handleAddNewCard = () => {
+    setSelectedChart(null)
+    handleOpen()
+  }
+  const handleEditCard = useCallback((chart) => {
+    setSelectedChart(chart)
+    handleOpen()
+  },[]);
+  
   return (
     <Container>
       <Box sx={{textAlign:'right', p:2}}>
-        <Button size="small" variant="contained" onClick={handleOpen}>Add New Card</Button>
-        <AddNewCardModal open={modalOpen} handleOpen={handleOpen} handleClose={handleClose} />
+        <Button size="small" variant="contained" onClick={handleAddNewCard}>Add New Card</Button>
+        <AddNewCardModal open={modalOpen} handleOpen={handleOpen} handleClose={handleClose}  selectedChart={selectedChart}/>
       </Box>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={6} lg={6} >
-          <ChartCard
-            title="Line Chart"
-            description="A line chart showing data trends"
-            memoryUsed="207MB"
-            data={chartData}
-            type="line"
-            legend={true}
-            cartesianGrid={true}
-            tooltip={true}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <ChartCard
-            title="Bar Chart"
-            description="A bar chart showing data distribution"
-            memoryUsed="5GB"
-            data={chartData}
-            type="bar"
-            legend={false}
-            cartesianGrid={true}
-            tooltip={true}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <ChartCard
-            title="Donut Chart"
-            description="A donut chart showing data distribution"
-            memoryUsed="5GB"
-            data={chartData}
-            type="donut"
-            legend={true}
-            cartesianGrid={false}
-            tooltip={true}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <ChartCard
-            title="Stacked Bar Chart"
-            description="A stacked bar chart showing data distribution"
-            memoryUsed="5GB"
-            data={stackedBarData}
-            type="stackedBar"
-            legend={false}
-            cartesianGrid={true}
-            tooltip={true}
-            handleOpen={handleOpen}
-          />
-        </Grid>
+        {charts?.map((item) => {
+          return(
+            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id} >
+              <ChartCard
+                title={item?.cardTitle}
+                description="Chart showing data trends"
+                memoryUsed="207MB"
+                data={chartData}
+                type={item?.chartType}
+                legend={true}
+                cartesianGrid={true}
+                tooltip={true}
+                handleOpen={() => handleOpen(item)}
+                chartData = {item}
+                onEdit = {() => handleEditCard(item)}
+                handleClose={handleClose}
+                id={item?.id}
+                handleDeleteClick={(id) => handleDeleteChart(id)}
+                handleConfirmDelete={handleConfirmDelete}
+                isDeleteModalOpen={isDeleteModalOpen}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            </Grid>
+          )
+        })}
       </Grid>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onConfirm={handleConfirmDelete}
+        onCancel={cancelDelete}
+      />
     </Container>
   );
 };

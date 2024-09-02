@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   Box,
@@ -11,7 +11,6 @@ import {
   IconButton,
   Grid,
   Button,
-  Paper,
   FormHelperText,
 } from "@mui/material";
 import {
@@ -34,8 +33,11 @@ import {
   SelectAllOutlined as ResourceIcon,
   
 } from "@mui/icons-material";
+import { useDispatch } from 'react-redux';
 import "./AddNewCardModal.css";
 import { useForm, Controller } from "react-hook-form";
+import { useAddDashboardChart, useUpdateChart } from "hooks";
+import { addChart,updateChart } from "store/chartsSlice";
 
 const cardTypes = [
   { icon: <ServicesIcon sx={{ color: "#09e393" }} />, label: "Services" },
@@ -64,10 +66,12 @@ const breakdownChart = [
   { icon: <StackedBarChart sx={{transform:'rotate(90deg)'}} />, label: "Stacked Bar Chart" , name:'stackedBar'},
 ];
 
-const AddNewCardModal = ({ open, handleClose }) => {
+const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
+    reset,
     watch,
     setValue,
     formState: { errors },
@@ -86,8 +90,43 @@ const AddNewCardModal = ({ open, handleClose }) => {
   const cardTypeValue = watch("cardType");
   const chartTypeValue = watch("chartType");
 
+  useEffect(() => {
+    if (selectedChart) {
+      reset(selectedChart); 
+    }
+  }, [selectedChart, reset]);
+
+  const handleSuccess = (data) => {
+    console.log('successfuly added dashboard',data)
+    dispatch(addChart(data?.data))
+  };
+
+  const handleError = (error) => {
+   console.log(error)
+  };
+
+  const { mutate: addDashboardChart, isLoading, isError, isSuccess, error } = useAddDashboardChart(handleSuccess,handleError);
+
+ 
+     // update chart code starts here
+   const handleUpdateSuccess = (data) => {
+    dispatch(updateChart(data)); 
+    handleClose();
+  };
+  
+  const handleUpdateError = (error) => {
+    console.error('Update failed:', error); 
+  };
+
+  const { mutate: updateDashboardChart } = useUpdateChart(handleUpdateSuccess, handleUpdateError);
+
   const handleSave = (data) => {
     console.log("Form Data:", data);
+    if (selectedChart) {
+      updateDashboardChart(data);
+    } else {
+      addDashboardChart(data); 
+    }
     handleClose();
   };
 
@@ -120,7 +159,7 @@ const AddNewCardModal = ({ open, handleClose }) => {
             backgroundColor: "background.default",
           }}
         >
-          <Typography sx={{fontSize:'16px',p:1}} variant="h6">Add New Card</Typography>
+          <Typography sx={{fontSize:'16px',p:1}} variant="h6">{selectedChart? 'Update Card' : 'Add New Card'}</Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
@@ -383,15 +422,15 @@ const AddNewCardModal = ({ open, handleClose }) => {
                         <IconButton
                           sx={{
                             background:
-                              chartTypeValue === type.label
+                              chartTypeValue === type.name
                                 ? "#ededed"
                                 : "transparent",
                             color:
-                              chartTypeValue === type.label
+                              chartTypeValue === type.name
                                 ? "#289fff"
                                 : "#000000",
                             opacity:
-                              chartTypeValue === type.label ? "1" : "0.5",
+                              chartTypeValue === type.name ? "1" : "0.5",
                             borderRadius: "50%",
                             p: 1,
                             "&:hover": {
@@ -399,7 +438,7 @@ const AddNewCardModal = ({ open, handleClose }) => {
                               boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
                             },
                           }}
-                          onClick={() => setValue("chartType", type.label)}
+                          onClick={() => setValue("chartType", type.name)}
                         >
                           {type.icon}
                         </IconButton>
@@ -416,7 +455,7 @@ const AddNewCardModal = ({ open, handleClose }) => {
                     </Typography>
                     {breakdownChart?.map((type) => (
                       <Box
-                        key={type.label}
+                        key={type.name}
                         sx={{
                           display: "inline-block",
                           verticalAlign: "middle",
@@ -426,15 +465,15 @@ const AddNewCardModal = ({ open, handleClose }) => {
                         <IconButton
                           sx={{
                             background:
-                              chartTypeValue === type.label
+                              chartTypeValue === type.name
                                 ? "#ededed"
                                 : "transparent",
                             color:
-                              chartTypeValue === type.label
+                              chartTypeValue === type.name
                                 ? "#289fff"
                                 : "#000000",
                             opacity:
-                              chartTypeValue === type.label ? "1" : "0.5",
+                              chartTypeValue === type.name ? "1" : "0.5",
                             borderRadius: "50%",
                             p: 1,
                             "&:hover": {
@@ -442,7 +481,7 @@ const AddNewCardModal = ({ open, handleClose }) => {
                               boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
                             },
                           }}
-                          onClick={() => setValue("chartType", type.label)}
+                          onClick={() => setValue("chartType", type.name)}
                         >
                           {type.icon}
                         </IconButton>
@@ -460,7 +499,7 @@ const AddNewCardModal = ({ open, handleClose }) => {
                   Cancel
                 </Button>
                 <Button variant="contained" onClick={handleSubmit(handleSave)}>
-                  Save
+                  {selectedChart ? 'Update' : 'Submit'}
                 </Button>
               </Grid>
             </Grid>
