@@ -13,9 +13,6 @@ const chartData = [
   { name: "Page B", value: 3000 },
   { name: "Page C", value: 2000 },
   { name: "Page D", value: 2780 },
-  { name: "Page E", value: 1890 },
-  { name: "Page F", value: 2390 },
-  { name: "Page G", value: 3490 },
 ];
 
 const stackedBarData = [
@@ -42,25 +39,7 @@ const stackedBarData = [
     uv: 2780,
     pv: 3908,
     amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
+  }
 ];
 
 const Dashboard = () => {
@@ -68,11 +47,21 @@ const Dashboard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState();
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
   const dispatch = useDispatch();
   const [selectedChart, setSelectedChart] = useState(null);
+  const [resetForm, setResetForm] = useState(() => () => {});
 
+  const handleOpen = () => {
+    setModalOpen(true);
+  }
+
+  const handleClose = (resetForm) => {
+    console.log(typeof resetForm, resetForm, "type of reset form");
+    setModalOpen(false);
+    if (resetForm) {
+      resetForm();
+    }
+  };
   const handleSuccess = (data) => {
     console.log("Data fetched successfully:", data);
     dispatch(setCharts(data?.data));
@@ -128,7 +117,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Box sx={{p:1 }}>
+    <Box sx={{ p: 1 }}>
       <Box sx={{ textAlign: "right" }}>
         <Button
           size="small"
@@ -144,17 +133,18 @@ const Dashboard = () => {
           handleOpen={handleOpen}
           handleClose={handleClose}
           selectedChart={selectedChart}
+          setResetForm={setResetForm}
         />
       </Box>
       <Grid container spacing={2}>
         {charts?.map((item) => {
           return (
-            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id}>
+            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id} className="testing786">
               <ChartCard
                 title={item?.cardTitle}
                 description="Chart showing data trends"
                 memoryUsed="207MB"
-                data={chartData}
+                data= {item?.chartType !== 'stackedBar' ? chartData : stackedBarData}
                 type={item?.chartType}
                 legend={true}
                 cartesianGrid={true}
@@ -162,7 +152,7 @@ const Dashboard = () => {
                 handleOpen={() => handleOpen(item)}
                 chartData={item}
                 onEdit={() => handleEditCard(item)}
-                handleClose={handleClose}
+                handleClose={() => handleClose(resetForm)}
                 id={item?.id}
                 handleDeleteClick={(id) => handleDeleteChart(id)}
                 handleConfirmDelete={handleConfirmDelete}

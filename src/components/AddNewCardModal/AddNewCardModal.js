@@ -40,7 +40,40 @@ import { useForm, Controller } from "react-hook-form";
 import { useAddDashboardChart, useUpdateChart } from "hooks";
 import { addChart,updateChart } from "store/chartsSlice";
 import { useQuery } from "react-query";
+import ChartCard from "components/ChartCard/ChartCard";
+const chartData = [
+  { name: "Page A", value: 4000 },
+  { name: "Page B", value: 3000 },
+  { name: "Page C", value: 2000 },
+  { name: "Page D", value: 2780 },
+];
 
+const stackedBarData = [
+  {
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  }
+];
 const cardTypes = [
   { icon: <ServicesIcon sx={{ color: "#09e393" }} />, label: "Services" },
   { icon: <UsersIcon sx={{ color: "#14f7a4" }} />, label: "Users" },
@@ -85,7 +118,7 @@ const fetchAndOptions = async (bySelection) => {
   return bySelection === 'By 1' ? ['And 1', 'And 2'] : ['And X', 'And Y'];
 };
 
-const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
+const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
@@ -122,20 +155,16 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
     enabled: !!by, // Fetch only if `by` is selected
   });
 
-  const handleShowChange = (value) => {
-    setValue('show', value);
-    resetField('by'); // Reset dependent fields
-    resetField('and');
-  };
+   // Set the reset function from react-hook-form in the parent component
+   useEffect(() => {
+    setResetForm(reset);
+  }, [reset, setResetForm]);
 
-  const handleByChange = (value) => {
-    setValue('by', value);
-    resetField('and'); // Reset `and` field when `by` changes
-  };
   useEffect(() => {
     if (selectedChart) {
       reset(selectedChart); 
     }
+    reset();
   }, [selectedChart, reset]);
 
   const handleSuccess = (data) => {
@@ -152,8 +181,8 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
  
      // update chart code starts here
    const handleUpdateSuccess = (data) => {
-    dispatch(updateChart(data)); 
-    handleClose();
+    dispatch(updateChart(data?.data)); 
+    handleClose(reset);
   };
   
   const handleUpdateError = (error) => {
@@ -169,11 +198,11 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
     } else {
       addDashboardChart(data); 
     }
-    handleClose();
+    handleClose(reset);
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={() => handleClose(reset)}>
       <Box
         sx={{
           position: "relative",
@@ -202,7 +231,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
           }}
         >
           <Typography sx={{fontSize:'16px',p:1}} variant="h6">{selectedChart? 'Update Card' : 'Add New Card'}</Typography>
-          <IconButton onClick={handleClose}>
+          <IconButton onClick={() => handleClose(reset)}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -324,16 +353,36 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                   }}
                 >
                   <Box elevation={3} sx={{ p: 0, textAlign: "left" }}>
-                    <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'500',color:'#000000'}}>
+                  <ChartCard
+                title= {watch("cardTitle") || "Card Title"}
+                description="Chart showing data trends"
+                memoryUsed="207MB"
+                data= { watch("cardType") || "Card Type" !== 'stackedBar' ? chartData : stackedBarData}
+                type= {watch("cardType") || "Card Type"}
+                legend={true}
+                cartesianGrid={true}
+                tooltip={true}
+                // handleOpen={() => handleOpen(item)}
+                // chartData={item}
+                // onEdit={() => handleEditCard(item)}
+                // handleClose={() => handleClose(resetForm)}
+                // id={item?.id}
+                // handleDeleteClick={(id) => handleDeleteChart(id)}
+                // handleConfirmDelete={handleConfirmDelete}
+                // isDeleteModalOpen={isDeleteModalOpen}
+                // setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+                    {/* <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'500',color:'#000000'}}>
                       {watch("cardTitle") || "Card Title"}
                     </Typography>
                     <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898'}}>
                       Total data volume for 6 services - Last 7 days
                     </Typography>
                     <Box sx={{display:'block',py:1}}>
-                      <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h3">22.6</Typography>
+                      <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h3">207</Typography>
                       <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h6">GB</Typography>
                     </Box>
+                    <ChartCard/>
                     <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
                       {watch("cardType") || "Card Type"}
                     </Typography>
@@ -348,7 +397,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                     </Typography>
                     <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
                       {watch("chartType") || "Chart Type: Bar Chart"}
-                    </Typography>
+                    </Typography> */}
                   </Box>
                 </Box>
               </Grid>
@@ -557,7 +606,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                 md={12}
                 sx={{ display: "block", textAlign: "right", mt: 3 , width:'100%', }}
               >
-                <Button variant="outlined" onClick={handleClose} sx={{ mr: 1 }}>
+                <Button variant="outlined" onClick={() => handleClose(reset)} sx={{ mr: 1 }}>
                   Cancel
                 </Button>
                 <Button variant="contained" onClick={handleSubmit(handleSave)}>

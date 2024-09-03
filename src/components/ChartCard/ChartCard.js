@@ -69,13 +69,14 @@ const ChartCard = React.memo(({
         return (
           <>
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={data}>
+              <BarChart data={data} cx={50}
+                  cy={70}>
                 {cartesianGrid && <CartesianGrid strokeDasharray="3 3" />}
                 <XAxis dataKey="name" />
                 <YAxis />
                 {tooltip && <Tooltip />}
                 {legend && <Legend />}
-                <Bar dataKey="value" fill="#8884d8" />
+                <Bar dataKey="value" barSize={15} fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </>
@@ -85,24 +86,25 @@ const ChartCard = React.memo(({
           <>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart
-                data={data}
-                layout="horizontal"
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis type="category" dataKey="name" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-                <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-                <Bar dataKey="amt" stackId="a" fill="#289fff" />
-              </BarChart>
+                  layout="vertical"
+                  data={data}
+                  cx={80}
+                  cy={70}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" scale="band"/>
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pv" stackId="a" barSize={10} fill="#413ea0" />
+                  <Bar dataKey="uv" stackId="a" barSize={10} fill="#289fff" />
+                </BarChart>
             </ResponsiveContainer>
           </>
         );
@@ -113,12 +115,12 @@ const ChartCard = React.memo(({
               <PieChart >
                 <Pie
                   data={data}
-                  cx={120}
+                  cx={80}
                   cy={70}
                   innerRadius={70}
                   outerRadius={75}
                   fill="#8884d8"
-                  paddingAngle={5}
+                  paddingAngle={4}
                   dataKey="value"
                 >
                   {data.map((entry, index) => (
@@ -134,7 +136,7 @@ const ChartCard = React.memo(({
                     layout="vertical"
                     verticalAlign="middle"
                     align="right"
-                    wrapperStyle={{ width: "150px", right: "10px" }}
+                    wrapperStyle={{ width: "80px", top:"0px", right: "10px" }}
                   />
                 )}
               </PieChart>
@@ -150,7 +152,8 @@ const ChartCard = React.memo(({
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (resetForm) => {
+    resetForm();
     setAnchorEl(null);
   };
   const handleDelete = (id) => {

@@ -40,11 +40,11 @@
       "id": "8a42",
       "cardType": "Resource",
       "savedView": "view2",
-      "cardTitle": "Chart Three changed",
-      "show": "summary",
-      "by": "category",
-      "now": "last24hours",
-      "chartType": "line"
+      "cardTitle": "Chart 3",
+      "show": "Option 1",
+      "by": "By 2",
+      "now": "And X",
+      "chartType": "stackedBar"
     },
     {
       "id": "94aa",
@@ -55,6 +55,16 @@
       "by": "By 2",
       "now": "And Y",
       "chartType": "bar"
+    },
+    {
+      "id": "351d",
+      "cardType": "Users",
+      "savedView": "view1",
+      "cardTitle": "Line Chart testng",
+      "show": "Option 1",
+      "by": "By 1",
+      "now": "And 2",
+      "chartType": "line"
     }
   ]
 }
