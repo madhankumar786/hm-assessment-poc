@@ -1,0 +1,3 @@
+.navBarDrawerStyle .MuiPaper-root {
+    min-width: calc(65% - 0px);
+}

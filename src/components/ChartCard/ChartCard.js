@@ -46,7 +46,6 @@ const ChartCard = React.memo(({
 }) => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const open = Boolean(anchorEl);
 
   const renderChart = () => {

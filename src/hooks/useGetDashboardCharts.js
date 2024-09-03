@@ -1,8 +1,4 @@
-// src/hooks/useGetDashboardCharts.js
 import { useQuery } from 'react-query';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { setCharts, setLoading, setError } from '../store/chartsSlice'; // Import actions
 import { apiClients } from 'utils';
 
 const fetchDashboardCharts = async () => {
@@ -17,9 +13,7 @@ return apiClients.service1Api
     });
 };
 
-// Custom hook to get dashboard charts, with onSuccess and onError as parameters
  const useGetDashboardCharts = ({ onSuccess, onError }) => {
-  // const dispatch = useDispatch();
   return useQuery( 
     {
       queryKey: ['dashboardCharts'],

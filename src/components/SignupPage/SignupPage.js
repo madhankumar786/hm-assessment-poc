@@ -16,7 +16,8 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
- 
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Person as PersonIcon,
@@ -25,11 +26,13 @@ import {
   AccountCircle as AccountCircleIcon,
   Lock,
 } from "@mui/icons-material";
-import { useNavigate,Link } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom";
 import signupBg from "../../assets/jpg/signup3.jpg";
 
 const Signup = () => {
   const [openModal, setOpenModal] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const {
     control,
     handleSubmit,
@@ -47,22 +50,27 @@ const Signup = () => {
   });
 
   const handleSuccess = (data) => {
-    setOpenModal(true)
-    console.log('User added successfully:', data);
+    setOpenModal(true);
+    console.log("User added successfully:", data);
   };
-  
+
   const handleConfirmation = () => {
-    navigate('/'); 
-  }
- 
+    navigate("/");
+  };
+
   const handleError = (error) => {
-    console.error('Error adding user:', error);
+    console.error("Error adding user:", error);
   };
 
   const navigate = useNavigate();
-  const { mutate: addUser, isLoading, isError, isSuccess, error } = useAddUser(handleSuccess,handleError);
+  const {
+    mutate: addUser,
+    isLoading,
+    isError,
+    isSuccess,
+    error,
+  } = useAddUser(handleSuccess, handleError);
 
-  
   const onSubmit = (data) => {
     addUser(data);
   };
@@ -84,7 +92,8 @@ const Signup = () => {
           backgroundColor: "white",
           borderRadius: 2,
           opacity: "0.9",
-          padding: 4,
+          py: 3,
+          px: isMobile ? 1 : 2,
           boxShadow: 3,
           width: { xs: "90%", sm: "80%", md: "60%", lg: "30%" },
           maxWidth: "500px",
@@ -149,7 +158,7 @@ const Signup = () => {
                 size="small"
                 sx={{
                   "& .MuiInputBase-input": {
-                    fontSize: "0.875rem", 
+                    fontSize: "0.875rem",
                   },
                 }}
               />
@@ -185,7 +194,7 @@ const Signup = () => {
                 size="small"
                 sx={{
                   "& .MuiInputBase-input": {
-                    fontSize: "0.875rem", 
+                    fontSize: "0.875rem",
                   },
                 }}
               />
@@ -221,13 +230,12 @@ const Signup = () => {
                 size="small"
                 sx={{
                   "& .MuiInputBase-input": {
-                    fontSize: "0.875rem", 
+                    fontSize: "0.875rem",
                   },
                 }}
               />
             )}
           />
-          {/* password field new */}
           <Controller
             name="password"
             control={control}
@@ -235,7 +243,8 @@ const Signup = () => {
               required: "Password is required",
               pattern: {
                 value: /(?=.*\d)(?=.*[!@#$%^&*])/,
-                message: "Password must include at least 1 digit and 1 special character ",
+                message:
+                  "Password must include at least 1 digit and 1 special character ",
               },
             }}
             render={({ field }) => (
@@ -259,14 +268,12 @@ const Signup = () => {
                 size="small"
                 sx={{
                   "& .MuiInputBase-input": {
-                    fontSize: "0.875rem", 
+                    fontSize: "0.875rem",
                   },
                 }}
               />
             )}
           />
-          {/* password field new */}
-         
           <Controller
             name="userType"
             control={control}
@@ -292,7 +299,7 @@ const Signup = () => {
                 {errors.userType && (
                   <Typography
                     sx={{
-                      fontSize: "0.75rem", 
+                      fontSize: "0.75rem",
                       textAlign: "left",
                       fontWeight: 400,
                       marginTop: "4px",
@@ -309,20 +316,36 @@ const Signup = () => {
             )}
           />
           <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={6} sx={{ px: 2 }}>
-              <Button type="submit" fullWidth variant="contained" size="small">
-                Register
-              </Button>
-            </Grid>
-            <Grid item xs={6} sx={{ px: 2 }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                size="small"
-                onClick={() => reset()}
-              >
-                Clear
-              </Button>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "nowrap",
+                px: 1,
+              }}
+            >
+              <Box sx={{ flex: 1 ,mr:1}}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  size="small"
+                >
+                  Register
+                </Button>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  onClick={() => reset()}
+                >
+                  Clear
+                </Button>
+              </Box>
             </Grid>
           </Grid>
           <Typography variant="body2" sx={{ mt: 2 }}>

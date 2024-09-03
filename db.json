@@ -1,14 +1,6 @@
 {
   "users": [
     {
-      "id": "8856",
-      "name": "madhan kumar",
-      "email": "madhanks27@gmail.com",
-      "phone": "9481645796",
-      "password": "M@madhan123",
-      "userType": "User"
-    },
-    {
       "id": "5f3c",
       "name": "Raj",
       "email": "raj@gmail.com",
@@ -53,6 +45,16 @@
       "by": "category",
       "now": "last24hours",
       "chartType": "line"
+    },
+    {
+      "id": "94aa",
+      "cardType": "Connected Apps",
+      "savedView": "view1",
+      "cardTitle": "Testing",
+      "show": "Option 1",
+      "by": "By 2",
+      "now": "And Y",
+      "chartType": "bar"
     }
   ]
 }

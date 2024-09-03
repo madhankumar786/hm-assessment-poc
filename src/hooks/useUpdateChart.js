@@ -23,13 +23,6 @@ const useUpdateChart = (onSuccess, onError) => {
       if (onError) onError(error);
     },
   });
-  //   const updateChart = async (chartData) => { 
-  //   await axios.put(`http://localhost:7000/dashboard/${chartData.id}`, chartData);
-  // };
-  // return useMutation(updateChart, {
-  //   onSuccess, 
-  //   onError,   
-  // });
 };
 
 export default useUpdateChart;

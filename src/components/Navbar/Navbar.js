@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import rolesConfig from "config/rolesConfig";
-
+import './Navbar.css';
 
 const Navbar = ({drawerOpen,handleDrawerToggle}) => {
   const [menus, setMenus] = useState([]);
@@ -37,14 +37,12 @@ const Navbar = ({drawerOpen,handleDrawerToggle}) => {
         <>
           <Drawer
             anchor="left"
-           
             open={drawerOpen}
             onClose={handleDrawerToggle}
-            sx={{ width: 250 }}
+            className="navBarDrawerStyle"
           >
             <div
               role="presentation"
-             
               onClick={handleDrawerToggle}
               onKeyDown={handleDrawerToggle}
             >

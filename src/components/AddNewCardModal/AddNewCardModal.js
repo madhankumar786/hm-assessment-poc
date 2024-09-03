@@ -12,13 +12,14 @@ import {
   Grid,
   Button,
   FormHelperText,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Close as CloseIcon,
   BarChart as BarChartIcon,
   BarChartOutlined as TrendBarChartIcon,
   ShowChart as LineChartIcon,
-  PieChart as PieChartIcon,
   BarChartOutlined as StackedBarChart,
   StackedBarChart as ProgressBarChartIcon,
   DonutLargeOutlined as DonutChartIcon,
@@ -38,6 +39,7 @@ import "./AddNewCardModal.css";
 import { useForm, Controller } from "react-hook-form";
 import { useAddDashboardChart, useUpdateChart } from "hooks";
 import { addChart,updateChart } from "store/chartsSlice";
+import { useQuery } from "react-query";
 
 const cardTypes = [
   { icon: <ServicesIcon sx={{ color: "#09e393" }} />, label: "Services" },
@@ -66,7 +68,26 @@ const breakdownChart = [
   { icon: <StackedBarChart sx={{transform:'rotate(90deg)'}} />, label: "Stacked Bar Chart" , name:'stackedBar'},
 ];
 
+const fetchShowOptions = async () => {
+  // Replace with your API call
+  return ['Option 1', 'Option 2', 'Option 3'];
+};
+
+const fetchByOptions = async (showSelection) => {
+  // Replace with your API call based on `showSelection`
+  if (!showSelection) return [];
+  return showSelection === 'Option 1' ? ['By 1', 'By 2'] : ['By A', 'By B'];
+};
+
+const fetchAndOptions = async (bySelection) => {
+  // Replace with your API call based on `bySelection`
+  if (!bySelection) return [];
+  return bySelection === 'By 1' ? ['And 1', 'And 2'] : ['And X', 'And Y'];
+};
+
 const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const {
     control,
@@ -74,6 +95,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
     reset,
     watch,
     setValue,
+    resetField,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -89,7 +111,27 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
 
   const cardTypeValue = watch("cardType");
   const chartTypeValue = watch("chartType");
+  const show = watch('show'); // Watch the value of `show`
+  const by = watch('by'); // Watch the value of `by`
 
+  const { data: showOptions = [] } = useQuery('showOptions', fetchShowOptions);
+  const { data: byOptions = [] } = useQuery(['byOptions', show], () => fetchByOptions(show), {
+    enabled: !!show, // Fetch only if `show` is selected
+  });
+  const { data: andOptions = [] } = useQuery(['andOptions', by], () => fetchAndOptions(by), {
+    enabled: !!by, // Fetch only if `by` is selected
+  });
+
+  const handleShowChange = (value) => {
+    setValue('show', value);
+    resetField('by'); // Reset dependent fields
+    resetField('and');
+  };
+
+  const handleByChange = (value) => {
+    setValue('by', value);
+    resetField('and'); // Reset `and` field when `by` changes
+  };
   useEffect(() => {
     if (selectedChart) {
       reset(selectedChart); 
@@ -200,8 +242,9 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                 my:1
               }}
             >
-              {cardTypes.map((type) => (
+              {cardTypes?.map((type) => (
                 <Box
+                key={type.label}
                   sx={{
                     cursor: "pointer",
                     flexBasis: "5%",
@@ -213,6 +256,9 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                     borderRadius: "2px",
                     p: 1,
                     mx: 1,
+                    mb: isMobile ? 1 : 0,
+                    minWidth: isMobile ? '50px' : '52px',
+                    minHeight: isMobile ? '50px' : '60px',
                     "&:hover": {
                       borderColor: "#289fff",
                       boxShadow: "0 0 10px rgba(0, 0, 255, 0.3)",
@@ -231,8 +277,8 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
             </Grid>
 
             {/* Saved View */}
-            <Grid container>
-              <Grid md={3}>
+            <Grid container >
+              <Grid item md={3} xs={12}>
                 <FormControl
                   fullWidth
                   margin="normal"
@@ -260,15 +306,15 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid md={9}></Grid>
-              <Grid md={7}>
+              <Grid item md={9}></Grid>
+              <Grid item md={7}>
                 <Typography sx={{ fontSize: "16px", color: "#9c9898", py: 1 }}>
                   Customize the Dashboard Card
                 </Typography>
                 <Box
                   sx={{
                     flex: "1",
-                    mr: 3,
+                    mr: isMobile ? 0 : 3,
                     maxHeight: "100%",
                     overflowY: "auto",
                     border: "1px solid grey",
@@ -306,7 +352,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                   </Box>
                 </Box>
               </Grid>
-              <Grid md={4} sx={{ p: 2 }}>
+              <Grid item md={4} sx={{ p: isMobile ? 0 : 2 }}>
                 {/* Card Title */}
                 <Controller
                   name="cardTitle"
@@ -341,8 +387,13 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                     render={({ field }) => (
                       <>
                         <Select {...field} size="small" label="Show">
-                          <MenuItem value="summary">Summary</MenuItem>
-                          <MenuItem value="detailed">Detailed</MenuItem>
+                        {showOptions.map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                          {/* <MenuItem value="summary">Summary</MenuItem>
+                          <MenuItem value="detailed">Detailed</MenuItem> */}
                         </Select>
                         {errors.show && (
                           <FormHelperText>{errors.show.message}</FormHelperText>
@@ -362,8 +413,13 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                     render={({ field }) => (
                       <>
                         <Select {...field} size="small" label="By">
-                          <MenuItem value="date">Date</MenuItem>
-                          <MenuItem value="category">Category</MenuItem>
+                        {byOptions.map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                          {/* <MenuItem value="date">Date</MenuItem>
+                          <MenuItem value="category">Category</MenuItem> */}
                         </Select>
                         {errors.by && (
                           <FormHelperText>{errors.by.message}</FormHelperText>
@@ -383,9 +439,14 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
                     render={({ field }) => (
                       <>
                         <Select {...field} size="small" label="Now">
-                          <MenuItem value="last24hours">Last 24 Hours</MenuItem>
+                        {andOptions.map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                          {/* <MenuItem value="last24hours">Last 24 Hours</MenuItem>
                           <MenuItem value="last7days">Last 7 Days</MenuItem>
-                          <MenuItem value="last30days">Last 30 Days</MenuItem>
+                          <MenuItem value="last30days">Last 30 Days</MenuItem> */}
                         </Select>
                         {errors.now && (
                           <FormHelperText>{errors.now.message}</FormHelperText>
@@ -492,8 +553,9 @@ const AddNewCardModal = ({ open, handleClose, selectedChart }) => {
               </Grid>
               {/* Footer Buttons */}
               <Grid
+                item
                 md={12}
-                sx={{ display: "block", textAlign: "right", mt: 3 }}
+                sx={{ display: "block", textAlign: "right", mt: 3 , width:'100%', }}
               >
                 <Button variant="outlined" onClick={handleClose} sx={{ mr: 1 }}>
                   Cancel

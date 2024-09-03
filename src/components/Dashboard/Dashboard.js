@@ -1,20 +1,21 @@
 // Dashboard.js
 
-import React, { useCallback, useState } from 'react';
-import { Box, Button, Container, Grid } from '@mui/material';
-import { AddNewCardModal, ChartCard, ConfirmationModal } from 'components';
-import { useSelector, useDispatch } from 'react-redux';
-import { useGetDashboardCharts, useChartDelete, useUpdateChart } from 'hooks';
-import { setCharts, removeChart} from 'store/chartsSlice';
+import React, { useCallback, useState } from "react";
+import { Box, Button, Grid } from "@mui/material";
+import { AddNewCardModal, ChartCard, ConfirmationModal } from "components";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetDashboardCharts, useChartDelete } from "hooks";
+import { setCharts, removeChart } from "store/chartsSlice";
+import { Addchart } from "@mui/icons-material";
 
 const chartData = [
-  { name: 'Page A', value: 4000 },
-  { name: 'Page B', value: 3000 },
-  { name: 'Page C', value: 2000 },
-  { name: 'Page D', value: 2780 },
-  { name: 'Page E', value: 1890 },
-  { name: 'Page F', value: 2390 },
-  { name: 'Page G', value: 3490 },
+  { name: "Page A", value: 4000 },
+  { name: "Page B", value: 3000 },
+  { name: "Page C", value: 2000 },
+  { name: "Page D", value: 2780 },
+  { name: "Page E", value: 1890 },
+  { name: "Page F", value: 2390 },
+  { name: "Page G", value: 3490 },
 ];
 
 const stackedBarData = [
@@ -66,19 +67,19 @@ const Dashboard = () => {
   const { charts } = useSelector((state) => state.dashboard);
   const [modalOpen, setModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedId,setSelectedId]= useState();
+  const [selectedId, setSelectedId] = useState();
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
   const dispatch = useDispatch();
   const [selectedChart, setSelectedChart] = useState(null);
 
   const handleSuccess = (data) => {
-    console.log('Data fetched successfully:', data);
+    console.log("Data fetched successfully:", data);
     dispatch(setCharts(data?.data));
   };
 
   const handleError = (error) => {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
     // dispatch(setError(error.message));
   };
 
@@ -88,8 +89,8 @@ const Dashboard = () => {
     onError: handleError,
   });
 
-  console.log(charts, 'charts from redux-toolkit')
-  console.log(isDeleteModalOpen, 'isDeleteModalOpen')
+  console.log(charts, "charts from redux-toolkit");
+  console.log(isDeleteModalOpen, "isDeleteModalOpen");
 
   const { mutate: deleteChart } = useChartDelete(
     () => {
@@ -97,7 +98,7 @@ const Dashboard = () => {
       setIsDeleteModalOpen(!isDeleteModalOpen);
     },
     (error) => {
-      console.error('Error deleting chart:', error);
+      console.error("Error deleting chart:", error);
     }
   );
 
@@ -106,10 +107,10 @@ const Dashboard = () => {
       deleteChart(selectedId);
     }
   };
- 
+
   const handleDeleteChart = (chartId) => {
-    setSelectedId(chartId); 
-    setIsDeleteModalOpen(!isDeleteModalOpen);        
+    setSelectedId(chartId);
+    setIsDeleteModalOpen(!isDeleteModalOpen);
   };
 
   // Cancel deletion and close the modal
@@ -118,24 +119,37 @@ const Dashboard = () => {
   };
 
   const handleAddNewCard = () => {
-    setSelectedChart(null)
-    handleOpen()
-  }
+    setSelectedChart(null);
+    handleOpen();
+  };
   const handleEditCard = useCallback((chart) => {
-    setSelectedChart(chart)
-    handleOpen()
-  },[]);
-  
+    setSelectedChart(chart);
+    handleOpen();
+  }, []);
+
   return (
-    <Container>
-      <Box sx={{textAlign:'right', p:2}}>
-        <Button size="small" variant="contained" onClick={handleAddNewCard}>Add New Card</Button>
-        <AddNewCardModal open={modalOpen} handleOpen={handleOpen} handleClose={handleClose}  selectedChart={selectedChart}/>
+    <Box sx={{p:1 }}>
+      <Box sx={{ textAlign: "right" }}>
+        <Button
+          size="small"
+          variant="contained"
+          onClick={handleAddNewCard}
+          sx={{ textTransform: "capitalize", mb: 2 }}
+          endIcon={<Addchart />}
+        >
+          Add new
+        </Button>
+        <AddNewCardModal
+          open={modalOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          selectedChart={selectedChart}
+        />
       </Box>
       <Grid container spacing={2}>
         {charts?.map((item) => {
-          return(
-            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id} >
+          return (
+            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id}>
               <ChartCard
                 title={item?.cardTitle}
                 description="Chart showing data trends"
@@ -146,8 +160,8 @@ const Dashboard = () => {
                 cartesianGrid={true}
                 tooltip={true}
                 handleOpen={() => handleOpen(item)}
-                chartData = {item}
-                onEdit = {() => handleEditCard(item)}
+                chartData={item}
+                onEdit={() => handleEditCard(item)}
                 handleClose={handleClose}
                 id={item?.id}
                 handleDeleteClick={(id) => handleDeleteChart(id)}
@@ -156,7 +170,7 @@ const Dashboard = () => {
                 setIsDeleteModalOpen={setIsDeleteModalOpen}
               />
             </Grid>
-          )
+          );
         })}
       </Grid>
       <ConfirmationModal
@@ -164,7 +178,7 @@ const Dashboard = () => {
         onConfirm={handleConfirmDelete}
         onCancel={cancelDelete}
       />
-    </Container>
+    </Box>
   );
 };
 

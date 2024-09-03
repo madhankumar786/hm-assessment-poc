@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const chartsSlice = createSlice({
   name: 'charts',
   initialState: {
-    charts: [], // Initial state for charts
+    charts: [], 
     loading: false,
     error: null,
   },

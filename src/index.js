@@ -12,11 +12,11 @@ const queryClient = new QueryClient(
   {
     defaultOptions: {
       queries: {
-        retry: 1,        // Customize retry behavior
-        refetchOnWindowFocus: false, // Example of adjusting refetching behavior
+        retry: 1,        
+        refetchOnWindowFocus: false,
       },
       mutations: {
-        retry: false,    // Set mutation retry options if desired
+        retry: false,    
       },
     },
   }

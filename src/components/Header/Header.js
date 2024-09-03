@@ -95,24 +95,26 @@ function Header() {
             <MenuIcon />
           </IconButton>
         )}
-        <Box sx={{flexGrow:3, textAlign: isMobile ? 'center' : 'left',pl:isMobile ? '20px':'0px'}}>
-          <Logo
-            onClick={handleOnClickAppTitle}
-            src={AppLogo}
-            alt="App Logo"
-            sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer'}}
-          />
+        <Box sx={{flex:3, textAlign: isMobile ? 'center' : 'left', pl: isMobile ? '20px':'16px', minWidth: isMobile ? '115px' : 'none'}}>
+          <Box sx={{display:'inline-block',verticalAlign:'middle', maxWidth:'30px'}}>
+            <Logo
+              onClick={handleOnClickAppTitle}
+              src={AppLogo}
+              alt="App Logo"
+              sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer', m:0}}
+            />
+          </Box>
           <Typography
             variant="h6"
             component="div"
-            sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer'}}
+            sx={{display:'inline-block',verticalAlign:'middle',cursor:'pointer', fontSize: isMobile ? '14px' : '16px', pl:1 }}
             onClick={handleOnClickAppTitle}
           >
             Company
           </Typography>
 
         </Box>
-          <Box sx={{ flexBasis: "850px", textAlign: "center", flex: 16 }}>
+          <Box sx={{ pr:'7rem', textAlign: "center", flex: 20 }}>
             <Navbar drawerOpen={drawerOpen} handleDrawerToggle={handleDrawerToggle} />
           </Box>
           <Box sx={{ flex: 1 }}>

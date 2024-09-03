@@ -43,7 +43,6 @@ app.get("/auth/github/callback", async (req, res) => {
     const { access_token } = response.data;
     
     console.log(access_token, "access_token from res");
-    // Get user info
     const userResponse = await axios.get("https://api.github.com/user", {
       headers: {
         'Authorization': `Bearer ${access_token}`,
@@ -51,7 +50,6 @@ app.get("/auth/github/callback", async (req, res) => {
       },
     });
 
-    // Send user info to frontend
     res.json(userResponse.data);
   } catch (error) {
     res.status(500).json({ error: "Authentication failed" });
