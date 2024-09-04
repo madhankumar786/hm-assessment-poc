@@ -65,6 +65,16 @@
       "by": "By 1",
       "now": "And 2",
       "chartType": "line"
+    },
+    {
+      "id": "3a11",
+      "cardType": "Resource",
+      "savedView": "chart",
+      "cardTitle": "Testing changed",
+      "show": "Data Acitivty Monitoring",
+      "by": "Data Risk Analysis",
+      "now": "Data Volume",
+      "chartType": "stackedBar"
     }
   ]
 }

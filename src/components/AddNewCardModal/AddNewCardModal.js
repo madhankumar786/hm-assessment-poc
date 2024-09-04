@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Modal,
   Box,
@@ -14,6 +14,7 @@ import {
   FormHelperText,
   useTheme,
   useMediaQuery,
+  Paper,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -40,40 +41,8 @@ import { useForm, Controller } from "react-hook-form";
 import { useAddDashboardChart, useUpdateChart } from "hooks";
 import { addChart,updateChart } from "store/chartsSlice";
 import { useQuery } from "react-query";
-import ChartCard from "components/ChartCard/ChartCard";
-const chartData = [
-  { name: "Page A", value: 4000 },
-  { name: "Page B", value: 3000 },
-  { name: "Page C", value: 2000 },
-  { name: "Page D", value: 2780 },
-];
+import { ChartPreview } from 'components';
 
-const stackedBarData = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  }
-];
 const cardTypes = [
   { icon: <ServicesIcon sx={{ color: "#09e393" }} />, label: "Services" },
   { icon: <UsersIcon sx={{ color: "#14f7a4" }} />, label: "Users" },
@@ -87,7 +56,6 @@ const cardTypes = [
   { icon: <ConnectedAppsIcon sx={{ color: "#0ecc86" }} />, label: "Connected Apps" },
   { icon: <ResourceIcon sx={{ color: "#f7af14" }} />, label: "Resource" },
 ];
-
 const trendChart = [
   { icon: <LineChartIcon />, label: "Line Chart", name:'line' },
   { icon: <TrendBarChartIcon />, label: "Bar Chart", name:'bar' },
@@ -102,20 +70,17 @@ const breakdownChart = [
 ];
 
 const fetchShowOptions = async () => {
-  // Replace with your API call
-  return ['Option 1', 'Option 2', 'Option 3'];
+  return ['Data Acitivty Monitoring', 'Sensitive Data Management'];
 };
 
 const fetchByOptions = async (showSelection) => {
-  // Replace with your API call based on `showSelection`
   if (!showSelection) return [];
-  return showSelection === 'Option 1' ? ['By 1', 'By 2'] : ['By A', 'By B'];
+  return showSelection === 'Data Acitivty Monitoring' ? ['Data Risk Analysis'] : ['Compliance', 'Monitoring'];
 };
 
 const fetchAndOptions = async (bySelection) => {
-  // Replace with your API call based on `bySelection`
   if (!bySelection) return [];
-  return bySelection === 'By 1' ? ['And 1', 'And 2'] : ['And X', 'And Y'];
+  return bySelection === 'Data Risk Analysis' ? ['No of User', 'Data Volume'] : bySelection === 'Compliance'? ['No of User', 'Data Volume','Usage'] : ['Data Volume','Usage'];
 };
 
 const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
@@ -321,9 +286,8 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
                     render={({ field }) => (
                       <>
                         <Select {...field} size="small" label="Saved View">
-                          <MenuItem value="view1">View 1</MenuItem>
-                          <MenuItem value="view2">View 2</MenuItem>
-                          <MenuItem value="view3">View 3</MenuItem>
+                          <MenuItem value="list">List</MenuItem>
+                          <MenuItem value="chart">Chart</MenuItem>
                         </Select>
                         {errors.savedView && (
                           <FormHelperText>
@@ -353,26 +317,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
                   }}
                 >
                   <Box elevation={3} sx={{ p: 0, textAlign: "left" }}>
-                  <ChartCard
-                title= {watch("cardTitle") || "Card Title"}
-                description="Chart showing data trends"
-                memoryUsed="207MB"
-                data= { watch("cardType") || "Card Type" !== 'stackedBar' ? chartData : stackedBarData}
-                type= {watch("cardType") || "Card Type"}
-                legend={true}
-                cartesianGrid={true}
-                tooltip={true}
-                // handleOpen={() => handleOpen(item)}
-                // chartData={item}
-                // onEdit={() => handleEditCard(item)}
-                // handleClose={() => handleClose(resetForm)}
-                // id={item?.id}
-                // handleDeleteClick={(id) => handleDeleteChart(id)}
-                // handleConfirmDelete={handleConfirmDelete}
-                // isDeleteModalOpen={isDeleteModalOpen}
-                // setIsDeleteModalOpen={setIsDeleteModalOpen}
-              />
-                    {/* <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'500',color:'#000000'}}>
+                    <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'500',color:'#000000'}}>
                       {watch("cardTitle") || "Card Title"}
                     </Typography>
                     <Typography variant="h6" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898'}}>
@@ -382,22 +327,24 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
                       <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h3">207</Typography>
                       <Typography sx={{display:'inline-block', verticalAlign:'bottom'}} variant="h6">GB</Typography>
                     </Box>
-                    <ChartCard/>
-                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
-                      {watch("cardType") || "Card Type"}
-                    </Typography>
-                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
-                      {watch("show") || "Show: Summary"}
-                    </Typography>
-                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
-                      {watch("by") || "By: Date"}
-                    </Typography>
-                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
-                      {watch("now") || "Now: Last 24 Hours"}
-                    </Typography>
-                    <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5}}>
-                      {watch("chartType") || "Chart Type: Bar Chart"}
-                    </Typography> */}
+                    <Box sx={{mt:1, p:1,minHeight: isMobile ? '150px' : '215px'}}><ChartPreview chartType={chartTypeValue}/></Box>
+                    <Box sx={{display:'flex',flexDirection:'row',flexWrap:'wrap'}}>
+                      <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5, pr:1}}>
+                        {watch("cardType") || "Card Type:---"}
+                      </Typography>
+                      <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5, pr:1}}>
+                        {watch("show") || "Show:--- "}
+                      </Typography>
+                      <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5, pr:1}}>
+                        {watch("by") || "By: ---"}
+                      </Typography>
+                      <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5, pr:1}}>
+                        {watch("now") || "Now:---"}
+                      </Typography>
+                      <Typography variant="body2" sx={{fontSize:'14px', fontWeight:'400',color:'#9c9898',pb:0.5, pr:1, textTransform:'capitalize'}}>
+                        {watch("chartType") || "Chart Type:---"}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               </Grid>
