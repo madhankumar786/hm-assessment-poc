@@ -44,6 +44,8 @@ const LoginPage = ({ handleLoginWithGithub }) => {
     localStorage.setItem("email", user.email);
     localStorage.setItem("userName", user.name);
     navigate("/dashboard");
+    setSnackbarMessage("Logged in Successfully!");
+    setOpenSnackbar(true);
   };
 
   const handleError = (error) => {
@@ -208,6 +210,7 @@ const LoginPage = ({ handleLoginWithGithub }) => {
         </form>
         <Snackbar
           open={openSnackbar}
+          anchorOrigin={{vertical:'top', horizontal:'center'}}
           autoHideDuration={6000}
           onClose={() => setOpenSnackbar(false)}
         >

@@ -4,3 +4,4 @@ export { default as useAddUser } from './useAddUser';
 export { default as useChartDelete } from './useChartDelete';
 export { default as useAddDashboardChart } from './useAddDashboardChart';
 export { default as useAuthenticateUser } from './useAuthenticateUser';
+export { default as useGetWidgetTableData } from './useGetWidgetTableData';

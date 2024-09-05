@@ -575,6 +575,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
     </Modal>
     <Snackbar
           open={openSnackbar}
+          anchorOrigin={{vertical:'top', horizontal:'center'}}
           autoHideDuration={6000}
           onClose={() => setOpenSnackbar(false)}
         >

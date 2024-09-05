@@ -1,0 +1,40 @@
+.widgetDetailsLeftContainer{
+    position: relative;
+}
+/* .widgetDetailsLeftContainer .MuiPaper-root{
+    margin-top:60px;
+} */
+@media only screen and (min-width: 900px) {
+    .tableHolderStyles .MuiBox-root{
+        margin-left: 215px;
+    }
+  }
+
+.widgetDetailsBtn{
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+}
+.MuiBox-root .MuiCheckbox-root{
+    padding:4px;
+}
+/* width */
+.widgetDetailsLeftContainer .MuiPaper-root::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+/* Track */
+.widgetDetailsLeftContainer .MuiPaper-root::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+.widgetDetailsLeftContainer .MuiPaper-root::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 30px;
+}
+
+/* Handle on hover */
+.widgetDetailsLeftContainer .MuiPaper-root::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

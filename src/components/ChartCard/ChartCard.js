@@ -24,7 +24,7 @@ import {
 } from "recharts";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "./ChartCard.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ChartCard = React.memo(
   ({
@@ -45,6 +45,7 @@ const ChartCard = React.memo(
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const navigate = useNavigate();
 
     const renderChart = () => {
       switch (type) {
@@ -171,6 +172,10 @@ const ChartCard = React.memo(
       }
     };
 
+    const handleCardTitleClick = () => {
+      navigate('/widgetDetails')
+    }
+
     return (
       <>
         <Card className="chart-card">
@@ -188,18 +193,19 @@ const ChartCard = React.memo(
           </Menu>
           <CardContent>
            
-            <Link to="/widgetDetails" >
+            {/* <Link to="/widgetDetails" > */}
               <Typography
                 variant="h3"
                 color="text.primary"
                 fontWeight="bold"
                 fontSize="14px"
                 gutterBottom
-                sx={{textDecoration:'none'}}
+                sx={{textDecoration:'none',cursor:'pointer'}}
+                onClick={handleCardTitleClick}
               >
                 {title}
               </Typography>
-            </Link>
+            {/* </Link> */}
             <Typography variant="body2" color="text.secondary" fontSize="12px">
               {description}
             </Typography>

@@ -62,6 +62,7 @@ const Dashboard = () => {
       resetForm();
     }
   };
+  
   const handleSuccess = (data) => {
     console.log("Data fetched successfully:", data);
     dispatch(setCharts(data?.data));

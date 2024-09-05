@@ -23,48 +23,26 @@
       "phone": "9877887766",
       "password": "M@yadhu123",
       "userType": "User"
+    },
+    {
+      "id": "952a",
+      "name": "testinggg",
+      "email": "testinggg@gmail.com",
+      "phone": "9988998877",
+      "password": "M@testing123",
+      "userType": "External"
     }
   ],
   "dashboard": [
     {
-      "id": "cfdf",
-      "cardType": "Resource",
-      "savedView": "view2",
-      "cardTitle": "Donut Chart one",
-      "show": "detailed",
-      "by": "category",
-      "now": "last24hours",
-      "chartType": "donut"
-    },
-    {
       "id": "8a42",
       "cardType": "Connected Apps",
       "savedView": "chart",
-      "cardTitle": "Testing 4",
+      "cardTitle": "Testing f",
       "show": "Data Acitivty Monitoring",
       "by": "Data Risk Analysis",
       "now": "Data Volume",
       "chartType": "bar"
-    },
-    {
-      "id": "94aa",
-      "cardType": "Connected Apps",
-      "savedView": "view1",
-      "cardTitle": "Testing",
-      "show": "Option 1",
-      "by": "By 2",
-      "now": "And Y",
-      "chartType": "bar"
-    },
-    {
-      "id": "351d",
-      "cardType": "Users",
-      "savedView": "view1",
-      "cardTitle": "Line Chart testing",
-      "show": "Option 1",
-      "by": "By 1",
-      "now": "And 2",
-      "chartType": "line"
     },
     {
       "id": "3a11",
@@ -74,7 +52,63 @@
       "show": "Data Acitivty Monitoring",
       "by": "Data Risk Analysis",
       "now": "Data Volume",
+      "chartType": "donut"
+    },
+    {
+      "id": "c805",
+      "cardType": "Web Malware",
+      "savedView": "chart",
+      "cardTitle": "Testing Five",
+      "show": "Data Acitivty Monitoring",
+      "by": "Data Risk Analysis",
+      "now": "Data Volume",
       "chartType": "stackedBar"
+    }
+  ],
+  "tableData":[
+    {
+      "id": 1,
+      "severity": "Critical",
+      "itemName": "Testfire_CCN_5_records.xls",
+      "userName": "admin@testfire.me",
+      "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
+      "incidentResponse": "Deleted",
+      "incidentStatus": "New",
+      "serviceName": "Google Drive",
+      "instanceName": "GoogleDrive Testfire"
+    },
+    {
+      "id": 2,
+      "severity": "High",
+      "itemName": "Testfire_CCN_5_records.xls",
+      "userName": "admin@testfire.me",
+      "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
+      "incidentResponse": "Deleted",
+      "incidentStatus": "New",
+      "serviceName": "Google Drive",
+      "instanceName": "GoogleDrive Testfire"
+    },
+     {
+      "id": 3,
+      "severity": "High",
+      "itemName": "Testfire_CCN_5_records.xls",
+      "userName": "admin@testfire.me",
+      "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
+      "incidentResponse": "Deleted",
+      "incidentStatus": "New",
+      "serviceName": "Google Drive",
+      "instanceName": "GoogleDrive Testfire"
+    },
+    {
+      "id": 4,
+      "severity": "High",
+      "itemName": "Testfire_CCN_5_records.xls",
+      "userName": "admin@testfire.me",
+      "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
+      "incidentResponse": "Deleted",
+      "incidentStatus": "New",
+      "serviceName": "Google Drive",
+      "instanceName": "GoogleDrive Testfire"
     }
   ]
 }
