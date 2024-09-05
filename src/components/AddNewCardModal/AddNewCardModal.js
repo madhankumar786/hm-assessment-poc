@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -14,7 +14,8 @@ import {
   FormHelperText,
   useTheme,
   useMediaQuery,
-  Paper,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -84,6 +85,8 @@ const fetchAndOptions = async (bySelection) => {
 };
 
 const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
@@ -135,6 +138,8 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
   const handleSuccess = (data) => {
     console.log('successfuly added dashboard',data)
     dispatch(addChart(data?.data))
+    setSnackbarMessage("Added Successfully!");
+    setOpenSnackbar(true);
   };
 
   const handleError = (error) => {
@@ -148,6 +153,8 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
    const handleUpdateSuccess = (data) => {
     dispatch(updateChart(data?.data)); 
     handleClose(reset);
+    setSnackbarMessage("Updated Successfully!");
+    setOpenSnackbar(true);
   };
   
   const handleUpdateError = (error) => {
@@ -167,6 +174,7 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
   };
 
   return (
+    <>
     <Modal open={open} onClose={() => handleClose(reset)}>
       <Box
         sx={{
@@ -565,6 +573,16 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
         </Box>
       </Box>
     </Modal>
+    <Snackbar
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={() => setOpenSnackbar(false)}
+        >
+          <Alert onClose={() => setOpenSnackbar(false)} severity="success">
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+    </>
   );
 };
 

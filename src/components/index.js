@@ -14,3 +14,4 @@ export { default as ChartCard } from './ChartCard/ChartCard';
 export { default as AddNewCardModal } from './AddNewCardModal/AddNewCardModal';
 export { default as ConfirmationModal } from './ConfirmationModal/ConfirmationModal';
 export { default as ChartPreview } from './ChartPreview/ChartPreview';
+export { default as WidgetDetails } from './WidgetDetails/WidgetDetails';

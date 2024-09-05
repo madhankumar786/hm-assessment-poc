@@ -139,7 +139,7 @@ const Dashboard = () => {
       <Grid container spacing={2}>
         {charts?.map((item) => {
           return (
-            <Grid item xs={12} sm={6} md={6} lg={6} key={item?.id} className="testing786">
+            <Grid item xs={12} sm={6} md={3} lg={4} key={item?.id} className="testing786">
               <ChartCard
                 title={item?.cardTitle}
                 description="Chart showing data trends"
@@ -155,9 +155,6 @@ const Dashboard = () => {
                 handleClose={() => handleClose(resetForm)}
                 id={item?.id}
                 handleDeleteClick={(id) => handleDeleteChart(id)}
-                handleConfirmDelete={handleConfirmDelete}
-                isDeleteModalOpen={isDeleteModalOpen}
-                setIsDeleteModalOpen={setIsDeleteModalOpen}
               />
             </Grid>
           );

@@ -9,7 +9,8 @@ import {
   Analytics,
   GitHubCallback,
   HomePage,
-  Incidents
+  Incidents,
+  WidgetDetails
 } from "components";
 const CLIENT_ID = "Ov23liC80XliMtFoFAlD";
 
@@ -41,13 +42,14 @@ function App() {
           path="/"
           element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />}
         >
-           <Route index element={<Navigate to="/dashboard" />} />
+          <Route index element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="incidents" element={<Incidents />} />
         </Route>
+        <Route path="widgetDetails" element={<WidgetDetails />} />
         <Route path="*" element={<Navigate to="/login" />} /> 
       </Routes>
       </header>

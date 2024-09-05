@@ -38,13 +38,13 @@
     },
     {
       "id": "8a42",
-      "cardType": "Resource",
-      "savedView": "view2",
-      "cardTitle": "Chart 3",
-      "show": "Option 1",
-      "by": "By 2",
-      "now": "And X",
-      "chartType": "stackedBar"
+      "cardType": "Connected Apps",
+      "savedView": "chart",
+      "cardTitle": "Testing 4",
+      "show": "Data Acitivty Monitoring",
+      "by": "Data Risk Analysis",
+      "now": "Data Volume",
+      "chartType": "bar"
     },
     {
       "id": "94aa",
@@ -60,7 +60,7 @@
       "id": "351d",
       "cardType": "Users",
       "savedView": "view1",
-      "cardTitle": "Line Chart testng",
+      "cardTitle": "Line Chart testing",
       "show": "Option 1",
       "by": "By 1",
       "now": "And 2",
