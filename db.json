@@ -63,52 +63,73 @@
       "by": "Data Risk Analysis",
       "now": "Data Volume",
       "chartType": "stackedBar"
+    },
+    {
+      "id": "840f",
+      "cardType": "Connected Apps",
+      "savedView": "chart",
+      "cardTitle": "Testing Four",
+      "show": "Data Acitivty Monitoring",
+      "by": "Data Risk Analysis",
+      "now": "Data Volume",
+      "chartType": "line"
     }
   ],
-  "tableData":[
+  "tableData": [
     {
       "id": 1,
       "severity": "Critical",
-      "itemName": "Testfire_CCN_5_records.xls",
-      "userName": "admin@testfire.me",
+      "itemName": "Test_filename_one.xls",
+      "userName": "John",
       "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
       "incidentResponse": "Deleted",
       "incidentStatus": "New",
       "serviceName": "Google Drive",
-      "instanceName": "GoogleDrive Testfire"
+      "instanceName": "GoogleDrive Test_one"
     },
     {
       "id": 2,
-      "severity": "High",
-      "itemName": "Testfire_CCN_5_records.xls",
-      "userName": "admin@testfire.me",
+      "severity": "Major",
+      "itemName": "Test_filename_two.xls",
+      "userName": "David",
       "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
       "incidentResponse": "Deleted",
       "incidentStatus": "New",
       "serviceName": "Google Drive",
-      "instanceName": "GoogleDrive Testfire"
+      "instanceName": "GoogleDrive Test_two"
     },
-     {
+    {
       "id": 3,
-      "severity": "High",
-      "itemName": "Testfire_CCN_5_records.xls",
-      "userName": "admin@testfire.me",
+      "severity": "Low",
+      "itemName": "Test_filename_three.xls",
+      "userName": "Brain",
       "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
       "incidentResponse": "Deleted",
       "incidentStatus": "New",
       "serviceName": "Google Drive",
-      "instanceName": "GoogleDrive Testfire"
+      "instanceName": "GoogleDrive Test-three"
     },
     {
       "id": 4,
-      "severity": "High",
-      "itemName": "Testfire_CCN_5_records.xls",
-      "userName": "admin@testfire.me",
+      "severity": "Major",
+      "itemName": "Test_filename_four.xls",
+      "userName": "Mike",
       "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
       "incidentResponse": "Deleted",
       "incidentStatus": "New",
       "serviceName": "Google Drive",
-      "instanceName": "GoogleDrive Testfire"
+      "instanceName": "GoogleDrive Test_four"
+    },
+    {
+      "id": 5,
+      "severity": "Low",
+      "itemName": "Test_filename_five.xls",
+      "userName": "Sansa",
+      "incidentCreatedOn": "Feb 13, 2023 2:07 AM UTC",
+      "incidentResponse": "Deleted",
+      "incidentStatus": "New",
+      "serviceName": "Google Drive",
+      "instanceName": "GoogleDrive Test_five"
     }
   ]
 }

@@ -29,8 +29,50 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetWidgetTableData } from "hooks";
 import { setWidgetDetaildTable } from "store/widgetDetailsTableSlice";
 
+const createStatusColumn = () => ({
+  renderCell: (params) => {
+    let bgColor = '';
+    let border = '';
+    switch (params?.value) {
+      case 'Critical':
+        bgColor = '#ff697a';
+        border='#940404';
+        break;
+      case 'Major':
+        bgColor = '#ffb3bb';
+        border='#e00720';
+        break;
+      case 'Low':
+        bgColor = '#fae3e6';
+        border='#fa7383';
+        break;
+      default:
+        bgColor = 'white';
+    }
+
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'inline-block',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: bgColor,
+          borderLeft:`2px solid ${border}`,
+          color: bgColor === '#ff697a' ? '#ffffff' : '#000000', 
+          borderRadius: 1,
+          padding: 1,
+        }}
+      >
+        {params?.value}
+      </Box>
+    );
+  },
+});
+
 const columns = [
-  { field: "severity", headerName: "Sev", width: 100, sortable: true },
+  { field: "severity", headerName: "Sev", width: 100, sortable: true , ...createStatusColumn()},
   { field: "itemName", headerName: "Item Name", width: 200, sortable: true },
   { field: "userName", headerName: "User Name", width: 150, sortable: true },
   {
@@ -65,64 +107,6 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    severity: "Critical",
-    itemName: "Testfire_CCN_5_records.xls",
-    userName: "admin@testfire.me",
-    incidentCreatedOn: "Feb 13, 2023 2:07 AM UTC",
-    incidentResponse: "Deleted",
-    incidentStatus: "New",
-    serviceName: "Google Drive",
-    instanceName: "GoogleDrive Testfire",
-  },
-  {
-    id: 2,
-    severity: "Low",
-    itemName: "Testfire_CCN_5_records.xls",
-    userName: "admin@testfire.me",
-    incidentCreatedOn: "Feb 13, 2023 2:07 AM UTC",
-    incidentResponse: "Deleted",
-    incidentStatus: "New",
-    serviceName: "Google Drive",
-    instanceName: "GoogleDrive Testfire",
-  },
-   {
-    id: 3,
-    severity: "High",
-    itemName: "Testfire_CCN_5_records.xls",
-    userName: "admin@testfire.me",
-    incidentCreatedOn: "Feb 13, 2023 2:07 AM UTC",
-    incidentResponse: "Deleted",
-    incidentStatus: "New",
-    serviceName: "Google Drive",
-    instanceName: "GoogleDrive Testfire",
-  },
-  {
-    id: 4,
-    severity: "Medium",
-    itemName: "Testfire_CCN_5_records.xls",
-    userName: "admin@testfire.me",
-    incidentCreatedOn: "Feb 13, 2023 2:07 AM UTC",
-    incidentResponse: "Deleted",
-    incidentStatus: "New",
-    serviceName: "Google Drive",
-    instanceName: "GoogleDrive Testfire",
-  },
-  {
-    id: 5,
-    severity: "Low",
-    itemName: "Testfire_CCN_5_records.xls",
-    userName: "admin@testfire.me",
-    incidentCreatedOn: "Feb 13, 2023 2:07 AM UTC",
-    incidentResponse: "Deleted",
-    incidentStatus: "New",
-    serviceName: "Google Drive",
-    instanceName: "GoogleDrive Testfire",
-  }
-];
-
 const WidgetDetails = () => {
   const { widgetTable } = useSelector((state) => state.WidgetDetails);
   const [leftTab, setLeftTab] = useState(0);
@@ -147,7 +131,7 @@ const WidgetDetails = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); // Goes back one step in the browser history
+    navigate(-1); 
   };
 
   const handleSuccess = (data) => {
@@ -160,7 +144,7 @@ const WidgetDetails = () => {
     // dispatch(setError(error.message));
   };
 
-  // Call the custom hook
+  
    useGetWidgetTableData({
     onSuccess: handleSuccess,
     onError: handleError,
@@ -214,7 +198,7 @@ const WidgetDetails = () => {
           </Tabs>
 
           {leftTab === 0 && (
-            <Box p={1}>
+            <Box p={1} sx={{display:'flex',flexDirection:'column'}}>
               {/* Incident Type Filters */}
               <Typography
                 variant="h6"
@@ -338,7 +322,7 @@ const WidgetDetails = () => {
         </Box>
 
         {/* Tabs for table and chart view */}
-        <Box display="flex" justifyContent="space-between" mb={2}>
+        <Box display="flex" justifyContent="space-between" mb={2} sx={{marginLeft: isMobile ? '0px' : '215px'}} >
           <Box sx={{backgroundcolor:"#ffffff", textAlign:'left',margin:'0px !important'}}>
             <Button onClick={handleBack} size="small" variant="outlined" startIcon={<ArrowBackIcon />}>Back</Button>
           </Box>
@@ -362,12 +346,16 @@ const WidgetDetails = () => {
           // DataGrid table view
         
             
-            <Box sx={{ overflowX: "auto", height: 335 }}>
+            <Box sx={{ overflowX: "auto", height: 335,"& .font-tabular-nums": {
+          color:'red',
+          borderLeft:'2px solid red',
+          
+        }, }}>
               <DataGrid
                 rows={widgetTable}
                 columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSize={4}
+                rowsPerPageOptions={[4]}
                 disableSelectionOnClick
                 autoHeight
                 sx={{

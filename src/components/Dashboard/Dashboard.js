@@ -9,33 +9,33 @@ import { setCharts, removeChart } from "store/chartsSlice";
 import { Addchart } from "@mui/icons-material";
 
 const chartData = [
-  { name: "Page A", value: 4000 },
-  { name: "Page B", value: 3000 },
-  { name: "Page C", value: 2000 },
-  { name: "Page D", value: 2780 },
+  { name: "DISK", value: 4000 },
+  { name: "Files", value: 3000 },
+  { name: "Blog", value: 2000 },
+  { name: "Weibo", value: 2780 },
 ];
 
 const stackedBarData = [
   {
-    name: "Page A",
+    name: "DISK",
     uv: 4000,
     pv: 2400,
     amt: 2400,
   },
   {
-    name: "Page B",
+    name: "Files",
     uv: 3000,
     pv: 1398,
     amt: 2210,
   },
   {
-    name: "Page C",
+    name: "Blog",
     uv: 2000,
     pv: 9800,
     amt: 2290,
   },
   {
-    name: "Page D",
+    name: "Weibo",
     uv: 2780,
     pv: 3908,
     amt: 2000,
@@ -73,8 +73,7 @@ const Dashboard = () => {
     // dispatch(setError(error.message));
   };
 
-  // Call the custom hook
-  const { data, isLoading, isError, error } = useGetDashboardCharts({
+  useGetDashboardCharts({
     onSuccess: handleSuccess,
     onError: handleError,
   });

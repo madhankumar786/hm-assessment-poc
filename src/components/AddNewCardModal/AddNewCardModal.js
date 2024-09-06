@@ -96,7 +96,6 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
     reset,
     watch,
     setValue,
-    resetField,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -112,18 +111,17 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
 
   const cardTypeValue = watch("cardType");
   const chartTypeValue = watch("chartType");
-  const show = watch('show'); // Watch the value of `show`
-  const by = watch('by'); // Watch the value of `by`
+  const show = watch('show'); 
+  const by = watch('by'); 
 
   const { data: showOptions = [] } = useQuery('showOptions', fetchShowOptions);
   const { data: byOptions = [] } = useQuery(['byOptions', show], () => fetchByOptions(show), {
-    enabled: !!show, // Fetch only if `show` is selected
+    enabled: !!show, 
   });
   const { data: andOptions = [] } = useQuery(['andOptions', by], () => fetchAndOptions(by), {
-    enabled: !!by, // Fetch only if `by` is selected
+    enabled: !!by, 
   });
 
-   // Set the reset function from react-hook-form in the parent component
    useEffect(() => {
     setResetForm(reset);
   }, [reset, setResetForm]);
@@ -146,10 +144,9 @@ const AddNewCardModal = ({ open, handleClose, selectedChart, setResetForm}) => {
    console.log(error)
   };
 
-  const { mutate: addDashboardChart, isLoading, isError, isSuccess, error } = useAddDashboardChart(handleSuccess,handleError);
+  const { mutate: addDashboardChart } = useAddDashboardChart(handleSuccess,handleError);
 
  
-     // update chart code starts here
    const handleUpdateSuccess = (data) => {
     dispatch(updateChart(data?.data)); 
     handleClose(reset);
