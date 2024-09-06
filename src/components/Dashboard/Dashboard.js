@@ -140,7 +140,7 @@ const Dashboard = () => {
       <Grid container spacing={2}>
         {charts?.map((item) => {
           return (
-            <Grid item xs={12} sm={6} md={3} lg={4} key={item?.id} className="testing786">
+            <Grid item xs={12} sm={6} md={3} lg={4} key={item?.id}>
               <ChartCard
                 title={item?.cardTitle}
                 description="Chart showing data trends"

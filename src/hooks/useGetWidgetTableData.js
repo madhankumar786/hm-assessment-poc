@@ -5,7 +5,6 @@ const getTableData = async () => {
   return await apiClients.service1Api
     .get("/tableData")
     .then((response) => {
-        debugger
       console.log(response, "response from login get call");
       return response.data;
     })
@@ -15,7 +14,6 @@ const getTableData = async () => {
 };
 
 const useWidgetTableData = ({onSuccess, onError}) => {
-    debugger
     return useQuery( 
         {
           queryKey: ['widgetTableData'],

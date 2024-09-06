@@ -339,7 +339,7 @@ const WidgetDetails = () => {
 
         {/* Tabs for table and chart view */}
         <Box display="flex" justifyContent="space-between" mb={2}>
-          <Box className="testing786" sx={{backgroundcolor:"#ffffff", textAlign:'left',margin:'0px !important'}}>
+          <Box sx={{backgroundcolor:"#ffffff", textAlign:'left',margin:'0px !important'}}>
             <Button onClick={handleBack} size="small" variant="outlined" startIcon={<ArrowBackIcon />}>Back</Button>
           </Box>
           <Box sx={{backgroundcolor:"#ffffff"}}>
