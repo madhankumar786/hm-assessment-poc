@@ -1,11 +1,8 @@
 .widgetDetailsLeftContainer{
     position: relative;
 }
-/* .widgetDetailsLeftContainer .MuiPaper-root{
-    margin-top:60px;
-} */
+
 @media only screen and (min-width: 900px) {
-    /* .tableHolderStyles .MuiBox-root{ */
     .tableHolderStyles .MuiDataGrid-autoHeight{
         margin-left: 215px;
     }

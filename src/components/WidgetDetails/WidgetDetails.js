@@ -1,4 +1,3 @@
-// WidgetDetails.jsx
 import React, { useState } from "react";
 import {
   Box,
@@ -141,7 +140,6 @@ const WidgetDetails = () => {
 
   const handleError = (error) => {
     console.error("Error fetching data:", error);
-    // dispatch(setError(error.message));
   };
 
   
@@ -152,7 +150,6 @@ const WidgetDetails = () => {
 
   return (
     <Box display="flex" height="100%" flexDirection="column">
-      {/* AppBar for mobile drawer toggle */}
       {isMobile && (
         <AppBar position="static">
           <Toolbar>
@@ -343,9 +340,6 @@ const WidgetDetails = () => {
         </Box>
 
         {viewTab === 0 && widgetTable && (
-          // DataGrid table view
-        
-            
             <Box sx={{ overflowX: "auto", height: 335,"& .font-tabular-nums": {
           color:'red',
           borderLeft:'2px solid red',

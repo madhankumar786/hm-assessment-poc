@@ -65,10 +65,6 @@ const Signup = () => {
   const navigate = useNavigate();
   const {
     mutate: addUser,
-    isLoading,
-    isError,
-    isSuccess,
-    error,
   } = useAddUser(handleSuccess, handleError);
 
   const onSubmit = (data) => {

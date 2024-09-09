@@ -53,7 +53,7 @@ const LoginPage = ({ handleLoginWithGithub }) => {
     setOpenSnackbar(true);
   };
 
-  const { mutate: authenticateUser, isLoading } = useAuthenticateUser(
+  const { mutate: authenticateUser } = useAuthenticateUser(
     handleSuccess,
     handleError
   );

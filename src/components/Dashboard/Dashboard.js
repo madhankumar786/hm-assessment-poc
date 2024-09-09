@@ -18,26 +18,26 @@ const chartData = [
 const stackedBarData = [
   {
     name: "DISK",
-    uv: 4000,
-    pv: 2400,
+    System: 4000,
+    Network: 2400,
     amt: 2400,
   },
   {
     name: "Files",
-    uv: 3000,
-    pv: 1398,
+    System: 3000,
+    Network: 1398,
     amt: 2210,
   },
   {
     name: "Blog",
-    uv: 2000,
-    pv: 9800,
+    System: 2000,
+    Network: 9800,
     amt: 2290,
   },
   {
     name: "Weibo",
-    uv: 2780,
-    pv: 3908,
+    System: 2780,
+    Network: 3908,
     amt: 2000,
   }
 ];

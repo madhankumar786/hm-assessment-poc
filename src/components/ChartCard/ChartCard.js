@@ -24,7 +24,7 @@ import {
 } from "recharts";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "./ChartCard.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ChartCard = React.memo(
   ({
@@ -100,8 +100,8 @@ const ChartCard = React.memo(
                   <YAxis dataKey="name" type="category" scale="band" />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="pv" stackId="a" barSize={10} fill="#413ea0" />
-                  <Bar dataKey="uv" stackId="a" barSize={10} fill="#289fff" />
+                  <Bar dataKey="System" stackId="a" barSize={10} fill="#413ea0" />
+                  <Bar dataKey="Network" stackId="a" barSize={10} fill="#289fff" />
                 </BarChart>
               </ResponsiveContainer>
             </>
